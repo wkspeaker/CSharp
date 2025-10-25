@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="LangrisserTools.Core/LangrisserTools.Core.csproj" Id="242aab3c-fc9b-4132-8c51-0781a35c6e7d" />
+  <Project Path="LangrisserTools.Main/LangrisserTools.Main.csproj" Id="262a8d90-b235-4bbd-85b1-9ac419172192" />
+  <Project Path="TimeCalculatorForGuild/LangrisserTools.TimeCalculatorForGuild.csproj" Id="372a8d90-b235-4bbd-85b1-9ac419172193" />
+</Solution>

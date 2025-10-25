@@ -1,0 +1,196 @@
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using LangrisserTools.Core.ViewModels;
+using TimeCalculatorForGuild.Models;
+using TimeCalculatorForGuild.Services;
+
+namespace TimeCalculatorForGuild.ViewModels
+{
+    public class MainWindowViewModel : BaseViewModel
+    {
+        private TimeCalculator _timeCalculator;
+        private readonly TimeCalculatorDataService _dataService;
+
+        public MainWindowViewModel()
+        {
+            _dataService = new TimeCalculatorDataService();
+            _timeCalculator = _dataService.LoadData();
+        }
+
+        public TimeCalculator TimeCalculator
+        {
+            get => _timeCalculator;
+            set
+            {
+                _timeCalculator = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string OutputMessage
+        {
+            get => _timeCalculator.OutputMessage;
+            set
+            {
+                _timeCalculator.OutputMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string OutputMessageTemplate
+        {
+            get => _timeCalculator.OutputMessageTemplate;
+            set
+            {
+                _timeCalculator.OutputMessageTemplate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string MainGuild
+        {
+            get => _timeCalculator.MainGuild;
+            set
+            {
+                _timeCalculator.MainGuild = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SecondaryGuild
+        {
+            get => _timeCalculator.SecondaryGuild;
+            set
+            {
+                _timeCalculator.SecondaryGuild = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public decimal TimeGap
+        {
+            get => _timeCalculator.TimeGap;
+            set
+            {
+                _timeCalculator.TimeGap = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TimeGapString));
+            }
+        }
+
+        public string TimeGapString
+        {
+            get
+            {
+                if (_timeCalculator.TimeGap == 0)
+                    return "";
+                return _timeCalculator.TimeGap.ToString("F2");
+            }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    _timeCalculator.TimeGap = 0;
+                    OnPropertyChanged(nameof(TimeGap));
+                    return;
+                }
+
+                // 处理时分格式 (如 "14:32")
+                if (value.Contains(":"))
+                {
+                    _timeCalculator.TimeGap = ParseTimeFormat(value);
+                }
+                else
+                {
+                    // 处理小数格式 (如 "14.32")
+                    if (decimal.TryParse(value, out decimal result))
+                    {
+                        _timeCalculator.TimeGap = result;
+                    }
+                }
+                
+                OnPropertyChanged(nameof(TimeGap));
+            }
+        }
+
+        /// <summary>
+        /// 解析时分格式为小数小时
+        /// </summary>
+        /// <param name="timeString">时分字符串，如 "14:32"</param>
+        /// <returns>小数小时，如 14.53</returns>
+        private decimal ParseTimeFormat(string timeString)
+        {
+            try
+            {
+                var parts = timeString.Split(':');
+                if (parts.Length == 2)
+                {
+                    if (int.TryParse(parts[0], out int hours) && int.TryParse(parts[1], out int minutes))
+                    {
+                        // 将分钟转换为小数小时
+                        decimal decimalHours = hours + (decimal)minutes / 60;
+                        return decimalHours;
+                    }
+                }
+            }
+            catch
+            {
+                // 解析失败时返回0
+            }
+            
+            return 0m;
+        }
+
+        public string ComingWeek
+        {
+            get => _timeCalculator.ComingWeek;
+            set
+            {
+                _timeCalculator.ComingWeek = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string GuildTypeName
+        {
+            get => _timeCalculator.GetGuildTypeName();
+        }
+
+        public void ToggleGuildType()
+        {
+            _timeCalculator.ToggleGuildType();
+            OnPropertyChanged(nameof(GuildTypeName));
+        }
+
+        public void GenerateMsg()
+        {
+            _timeCalculator.GenerateMsg();
+            OnPropertyChanged(nameof(OutputMessage));
+        }
+
+        /// <summary>
+        /// 保存数据到JSON文件
+        /// </summary>
+        public void SaveData()
+        {
+            _dataService.SaveData(_timeCalculator);
+        }
+
+        /// <summary>
+        /// 从JSON文件加载数据
+        /// </summary>
+        public void LoadData()
+        {
+            _timeCalculator = _dataService.LoadData();
+            // 通知所有属性已更新
+            OnPropertyChanged(nameof(OutputMessage));
+            OnPropertyChanged(nameof(OutputMessageTemplate));
+            OnPropertyChanged(nameof(MainGuild));
+            OnPropertyChanged(nameof(SecondaryGuild));
+            OnPropertyChanged(nameof(TimeGap));
+            OnPropertyChanged(nameof(TimeGapString));
+            OnPropertyChanged(nameof(ComingWeek));
+            OnPropertyChanged(nameof(GuildTypeName));
+        }
+    }
+}

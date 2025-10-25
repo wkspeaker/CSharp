@@ -1,0 +1,175 @@
+﻿using System;
+using System.IO;
+using System.Linq;
+
+namespace LangrisserTools.Core.Services
+{
+    /// <summary>
+    /// 统一数据路径管理服务
+    /// 支持项目内数据存储和统一数据目录两种模式
+    /// </summary>
+    public class DataPathService
+    {
+        private static readonly Lazy<DataPathService> _instance = new Lazy<DataPathService>(() => new DataPathService());
+        public static DataPathService Instance => _instance.Value;
+
+        private DataPathService() { }
+
+        /// <summary>
+        /// 获取工具的数据目录路径（主路径，用于保存/创建）
+        /// </summary>
+        /// <param name="toolName">工具名称</param>
+        /// <param name="useUnifiedPath">是否使用统一路径模式，null时使用配置</param>
+        /// <returns>数据目录路径</returns>
+        public string GetDataDirectory(string toolName, bool? useUnifiedPath = null)
+        {
+            // 如果未指定，使用配置
+            var useUnified = useUnifiedPath ?? DataPathConfiguration.Instance.UseUnifiedPath;
+
+            if (useUnified)
+            {
+                // 统一路径模式：{SolutionRoot}/{UnifiedDataRoot}/{ToolName}/
+                var solutionRoot = GetSolutionRoot();
+                var dataRoot = DataPathConfiguration.Instance.UnifiedDataRoot;
+                return Path.Combine(solutionRoot, dataRoot, toolName);
+            }
+            else
+            {
+                // 项目内路径模式：优先使用可执行文件目录下的 Data/{ToolName}，兼容多种历史布局
+                var appDir = AppContext.BaseDirectory?.TrimEnd(Path.DirectorySeparatorChar) ?? Directory.GetCurrentDirectory();
+                return Path.Combine(appDir, "Data", toolName);
+            }
+        }
+
+        /// <summary>
+        /// 获取用于查找文件的候选数据目录（不创建目录）
+        /// 返回按优先级排列的目录列表，用于加载时查找已有文件
+        /// </summary>
+        private string[] GetCandidateDataDirectories(string toolName, bool? useUnifiedPath = null)
+        {
+            var useUnified = useUnifiedPath ?? DataPathConfiguration.Instance.UseUnifiedPath;
+
+            if (useUnified)
+            {
+                var solutionRoot = GetSolutionRoot();
+                var dataRoot = DataPathConfiguration.Instance.UnifiedDataRoot;
+                var unifiedDir = Path.Combine(solutionRoot, dataRoot, toolName);
+                return new[] { unifiedDir };
+            }
+            else
+            {
+                var appDir = AppContext.BaseDirectory?.TrimEnd(Path.DirectorySeparatorChar) ?? Directory.GetCurrentDirectory();
+                var currentDir = Directory.GetCurrentDirectory();
+
+                // candidates: appDir/Data/ToolName, appDir/Data, appDir/ToolName/Data, currentDir/Data/ToolName, currentDir/Data
+                return new[] {
+                    Path.Combine(appDir, "Data", toolName),
+                    Path.Combine(appDir, "Data"),
+                    Path.Combine(appDir, toolName, "Data"),
+                    Path.Combine(currentDir, "Data", toolName),
+                    Path.Combine(currentDir, "Data")
+                };
+            }
+        }
+
+        /// <summary>
+        /// 获取工具的数据文件路径
+        /// 如果 createIfMissing 为 false，将在候选目录中查找已存在的文件并返回第一个找到的路径；
+        /// 否则返回主路径（并确保目录存在）用于保存。
+        /// </summary>
+        /// <param name="toolName">工具名称</param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="useUnifiedPath">是否使用统一路径模式</param>
+        /// <param name="createIfMissing">是否在返回路径前确保目录存在（用于保存时）</param>
+        /// <returns>数据文件完整路径</returns>
+        public string GetDataFilePath(string toolName, string fileName, bool? useUnifiedPath = null, bool createIfMissing = true)
+        {
+            if (!createIfMissing)
+            {
+                // 在候选目录中查找已存在的文件
+                var candidates = GetCandidateDataDirectories(toolName, useUnifiedPath);
+                foreach (var dir in candidates)
+                {
+                    try
+                    {
+                        var path = Path.Combine(dir, fileName);
+                        if (File.Exists(path))
+                            return path;
+                    }
+                    catch
+                    {
+                        // 忽略路径异常，继续下一个候选
+                    }
+                }
+
+                // 如果没有找到现有文件，返回默认主路径（不创建目录）
+                var defaultDir = GetDataDirectory(toolName, useUnifiedPath);
+                return Path.Combine(defaultDir, fileName);
+            }
+            else
+            {
+                var dataDirectory = GetDataDirectory(toolName, useUnifiedPath);
+                EnsureDirectoryExists(dataDirectory);
+                return Path.Combine(dataDirectory, fileName);
+            }
+        }
+
+        /// <summary>
+        /// 确保数据目录存在
+        /// </summary>
+        /// <param name="directoryPath">目录路径</param>
+        public void EnsureDirectoryExists(string directoryPath)
+        {
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+        }
+
+        /// <summary>
+        /// 获取解决方案根目录
+        /// </summary>
+        /// <returns>解决方案根目录路径</returns>
+        public string GetSolutionRoot()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var directory = new DirectoryInfo(currentDirectory);
+
+            // 向上查找包含 .sln 文件的目录
+            while (directory != null)
+            {
+                try
+                {
+                    if (Directory.GetFiles(directory.FullName, "*.sln").Length >0)
+                    {
+                        return directory.FullName;
+                    }
+                }
+                catch
+                {
+                    // 忽略访问异常，继续向上查找
+                }
+
+                directory = directory.Parent;
+            }
+
+            // 如果找不到解决方案文件，返回当前目录
+            return currentDirectory;
+        }
+
+        /// <summary>
+        /// 获取所有工具的数据目录（统一路径模式）
+        /// </summary>
+        /// <returns>所有工具数据目录路径</returns>
+        public string[] GetAllToolDataDirectories()
+        {
+            var solutionRoot = GetSolutionRoot();
+            var dataRoot = Path.Combine(solutionRoot, "Data");
+
+            if (!Directory.Exists(dataRoot))
+                return new string[0];
+
+            return Directory.GetDirectories(dataRoot);
+        }
+    }
+}

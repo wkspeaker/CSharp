@@ -1,0 +1,9 @@
+{
+  "OutputMessage": "天空之城(主)/阿迪达斯(副)\r\n当期10.27 ~ 11.02: 副团\r\n加团时间：周六(10.25)18点半后\r\n每次退团更改",
+  "OutputMessageTemplate": "{MainGuild}(主)/{SecondaryGuild}(副)\r\n当期{ComingWeek}: {GuildOfComingWeek}\r\n加团时间：{AdjustedTime}后\r\n每次退团更改",
+  "MainGuild": "天空之城",
+  "SecondaryGuild": "阿迪达斯",
+  "TimeGap": 2.590,
+  "ComingWeek": "10.27 ~ 11.02",
+  "GuildType": 1
+}

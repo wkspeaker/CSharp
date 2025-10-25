@@ -1,0 +1,95 @@
+﻿<Window x:Class="TimeCalculatorForGuild.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TimeCalculatorForGuild"
+        xmlns:helpers="clr-namespace:TimeCalculatorForGuild.Helpers"
+        mc:Ignorable="d"
+        Title="公会时间计算器" Height="520" Width="800">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- 显示消息 -->
+        <Label Grid.Row="0" Grid.Column="0" Content="显示消息:" VerticalAlignment="Top" Margin="0,0,10,0"/>
+        <TextBox Grid.Row="0" Grid.Column="1" 
+                 Text="{Binding OutputMessage, UpdateSourceTrigger=PropertyChanged}" 
+                 TextWrapping="Wrap" 
+                 AcceptsReturn="True" 
+                 VerticalScrollBarVisibility="Auto"
+                 Height="100"
+                 Margin="0,0,0,10"/>
+
+        <!-- 消息模板 -->
+        <Label Grid.Row="1" Grid.Column="0" Content="消息模板:" VerticalAlignment="Top" Margin="0,0,10,0"/>
+        <TextBox Grid.Row="1" Grid.Column="1" 
+                 Text="{Binding OutputMessageTemplate, UpdateSourceTrigger=PropertyChanged}" 
+                 TextWrapping="Wrap" 
+                 AcceptsReturn="True" 
+                 VerticalScrollBarVisibility="Auto"
+                 Height="80"
+                 Margin="0,0,0,10"/>
+
+        <!-- 主工会 -->
+        <Label Grid.Row="2" Grid.Column="0" Content="主工会:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+        <TextBox Grid.Row="2" Grid.Column="1" 
+                 Text="{Binding MainGuild, UpdateSourceTrigger=PropertyChanged}" 
+                 Margin="0,0,0,10"/>
+
+        <!-- 副工会 -->
+        <Label Grid.Row="3" Grid.Column="0" Content="副工会:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+        <TextBox Grid.Row="3" Grid.Column="1" 
+                 Text="{Binding SecondaryGuild, UpdateSourceTrigger=PropertyChanged}" 
+                 Margin="0,0,0,10"/>
+
+        <!-- 下次加入公会冷却时间 -->
+        <Label Grid.Row="4" Grid.Column="0" Content="下次加入公会冷却时间:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+        <StackPanel Grid.Row="4" Grid.Column="1" Margin="0,0,0,10">
+            <TextBox Text="{Binding TimeGapString, UpdateSourceTrigger=PropertyChanged}" 
+                     ToolTip="支持格式：14.32（14小时32分钟）或 14:32"/>
+            <TextBlock Text="支持格式：14.32（14小时32分钟）或 14:32" 
+                       FontSize="10" 
+                       Foreground="Gray" 
+                       Margin="0,2,0,0"/>
+        </StackPanel>
+
+        <!-- 下周范围 -->
+        <Label Grid.Row="5" Grid.Column="0" Content="下周范围:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+        <TextBox Grid.Row="5" Grid.Column="1" 
+                 Text="{Binding ComingWeek, UpdateSourceTrigger=PropertyChanged}" 
+                 Margin="0,0,0,10"/>
+
+        <!-- 团类型切换 -->
+        <Label Grid.Row="6" Grid.Column="0" Content="当前团类型:" VerticalAlignment="Center" Margin="0,0,10,20"/>
+        <Button Grid.Row="6" Grid.Column="1" 
+                Content="{Binding GuildTypeName}" 
+                HorizontalAlignment="Left"
+                Padding="20,8"
+                Click="ToggleGuildTypeButton_Click"
+                Background="LightBlue"
+                Margin="0,0,0,20"/>
+
+        <!-- 生成消息按钮 -->
+        <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
+                Content="生成消息" 
+                HorizontalAlignment="Center"
+                Padding="20,10"
+                Click="GenerateMsgButton_Click"/>
+
+    </Grid>
+</Window>

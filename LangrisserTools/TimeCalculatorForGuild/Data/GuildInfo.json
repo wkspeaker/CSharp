@@ -1,0 +1,9 @@
+{
+  "OutputMessage": "",
+  "OutputMessageTemplate": "当前的主公会为{MainGuild}，副工会为{SecondaryGuild}。调整时间：{AdjustedTime}，下周范围：{ComingWeek}，团类型：{GuildOfComingWeek}",
+  "MainGuild": "",
+  "SecondaryGuild": "",
+  "TimeGap": 0.0,
+  "ComingWeek": "",
+  "GuildType": 0
+}

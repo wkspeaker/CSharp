@@ -1,0 +1,139 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{242AAB3C-FC9B-4132-8C51-0781A35C6E7D}|LangrisserTools.Core\\LangrisserTools.Core.csproj|h:\\redspider\\private\\develop\\c#\\csharppractics\\csharp\\langrissertools\\langrissertools.core\\services\\datapathconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{242AAB3C-FC9B-4132-8C51-0781A35C6E7D}|LangrisserTools.Core\\LangrisserTools.Core.csproj|solutionrelative:langrissertools.core\\services\\datapathconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{242AAB3C-FC9B-4132-8C51-0781A35C6E7D}|LangrisserTools.Core\\LangrisserTools.Core.csproj|h:\\redspider\\private\\develop\\c#\\csharppractics\\csharp\\langrissertools\\langrissertools.core\\services\\datapathservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{242AAB3C-FC9B-4132-8C51-0781A35C6E7D}|LangrisserTools.Core\\LangrisserTools.Core.csproj|solutionrelative:langrissertools.core\\services\\datapathservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{242AAB3C-FC9B-4132-8C51-0781A35C6E7D}|LangrisserTools.Core\\LangrisserTools.Core.csproj|h:\\redspider\\private\\develop\\c#\\csharppractics\\csharp\\langrissertools\\langrissertools.core\\services\\idataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{242AAB3C-FC9B-4132-8C51-0781A35C6E7D}|LangrisserTools.Core\\LangrisserTools.Core.csproj|solutionrelative:langrissertools.core\\services\\idataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{242AAB3C-FC9B-4132-8C51-0781A35C6E7D}|LangrisserTools.Core\\LangrisserTools.Core.csproj|h:\\redspider\\private\\develop\\c#\\csharppractics\\csharp\\langrissertools\\langrissertools.core\\services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{242AAB3C-FC9B-4132-8C51-0781A35C6E7D}|LangrisserTools.Core\\LangrisserTools.Core.csproj|solutionrelative:langrissertools.core\\services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{372A8D90-B235-4BBD-85B1-9AC419172193}|TimeCalculatorForGuild\\LangrisserTools.TimeCalculatorForGuild.csproj|h:\\redspider\\private\\develop\\c#\\csharppractics\\csharp\\langrissertools\\timecalculatorforguild\\langrissertools.timecalculatorforguild.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{372A8D90-B235-4BBD-85B1-9AC419172193}|TimeCalculatorForGuild\\LangrisserTools.TimeCalculatorForGuild.csproj|solutionrelative:timecalculatorforguild\\langrissertools.timecalculatorforguild.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{372A8D90-B235-4BBD-85B1-9AC419172193}|TimeCalculatorForGuild\\TimeCalculatorForGuild.csproj|h:\\redspider\\private\\develop\\c#\\csharppractics\\csharp\\langrissertools\\timecalculatorforguild\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{372A8D90-B235-4BBD-85B1-9AC419172193}|TimeCalculatorForGuild\\TimeCalculatorForGuild.csproj|solutionrelative:timecalculatorforguild\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{262A8D90-B235-4BBD-85B1-9AC419172192}|LangrisserTools.Main\\LangrisserTools.Main.csproj|h:\\redspider\\private\\develop\\c#\\csharppractics\\csharp\\langrissertools\\langrissertools.main\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{262A8D90-B235-4BBD-85B1-9AC419172192}|LangrisserTools.Main\\LangrisserTools.Main.csproj|solutionrelative:langrissertools.main\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DataPathConfiguration.cs",
+              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Core\\Services\\DataPathConfiguration.cs",
+              "RelativeDocumentMoniker": "LangrisserTools.Core\\Services\\DataPathConfiguration.cs",
+              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Core\\Services\\DataPathConfiguration.cs",
+              "RelativeToolTip": "LangrisserTools.Core\\Services\\DataPathConfiguration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T14:38:20.832Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IDataService.cs",
+              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Core\\Services\\IDataService.cs",
+              "RelativeDocumentMoniker": "LangrisserTools.Core\\Services\\IDataService.cs",
+              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Core\\Services\\IDataService.cs",
+              "RelativeToolTip": "LangrisserTools.Core\\Services\\IDataService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T14:27:39.52Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DataPathService.cs",
+              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Core\\Services\\DataPathService.cs",
+              "RelativeDocumentMoniker": "LangrisserTools.Core\\Services\\DataPathService.cs",
+              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Core\\Services\\DataPathService.cs",
+              "RelativeToolTip": "LangrisserTools.Core\\Services\\DataPathService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T14:19:57.183Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DataService.cs",
+              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Core\\Services\\DataService.cs",
+              "RelativeDocumentMoniker": "LangrisserTools.Core\\Services\\DataService.cs",
+              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Core\\Services\\DataService.cs",
+              "RelativeToolTip": "LangrisserTools.Core\\Services\\DataService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswGwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T14:06:19.836Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Main\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "LangrisserTools.Main\\MainWindow.xaml.cs",
+              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Main\\MainWindow.xaml.cs",
+              "RelativeToolTip": "LangrisserTools.Main\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAwwHwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T14:00:06.584Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LangrisserTools.TimeCalculatorForGuild.csproj",
+              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\TimeCalculatorForGuild\\LangrisserTools.TimeCalculatorForGuild.csproj",
+              "RelativeDocumentMoniker": "TimeCalculatorForGuild\\LangrisserTools.TimeCalculatorForGuild.csproj",
+              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\TimeCalculatorForGuild\\LangrisserTools.TimeCalculatorForGuild.csproj",
+              "RelativeToolTip": "TimeCalculatorForGuild\\LangrisserTools.TimeCalculatorForGuild.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-10-25T13:54:58.666Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\TimeCalculatorForGuild\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "TimeCalculatorForGuild\\MainWindow.xaml.cs",
+              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\TimeCalculatorForGuild\\MainWindow.xaml.cs",
+              "RelativeToolTip": "TimeCalculatorForGuild\\MainWindow.xaml.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAmwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T13:53:05.215Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

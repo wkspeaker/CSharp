@@ -1,0 +1,197 @@
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using LangrisserTools.Core.ViewModels;
+using LangrisserTools.TimeCalculatorForGuild.Models;
+using LangrisserTools.TimeCalculatorForGuild.Services;
+
+namespace LangrisserTools.TimeCalculatorForGuild.ViewModels
+{
+    public class MainWindowViewModel : ToolViewModel<TimeCalculator, TimeCalculatorDataService>
+    {
+        public MainWindowViewModel() : base(new TimeCalculatorDataService())
+        {
+            // 使用同步加载以兼容当前应用启动流程
+            Load();
+        }
+
+        protected override void OnModelLoaded()
+        {
+            //这里将 Model 映射到 UI绑定属性所需的通知
+            OnPropertyChanged(nameof(OutputMessage));
+            OnPropertyChanged(nameof(OutputMessageTemplate));
+            OnPropertyChanged(nameof(MainGuild));
+            OnPropertyChanged(nameof(SecondaryGuild));
+            OnPropertyChanged(nameof(TimeGap));
+            OnPropertyChanged(nameof(TimeGapString));
+            OnPropertyChanged(nameof(ComingWeek));
+            OnPropertyChanged(nameof(GuildTypeName));
+        }
+
+        public TimeCalculator TimeCalculator
+        {
+            get => Model;
+            set
+            {
+                Model = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string OutputMessage
+        {
+            get => Model.OutputMessage;
+            set
+            {
+                Model.OutputMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string OutputMessageTemplate
+        {
+            get => Model.OutputMessageTemplate;
+            set
+            {
+                Model.OutputMessageTemplate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string MainGuild
+        {
+            get => Model.MainGuild;
+            set
+            {
+                Model.MainGuild = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SecondaryGuild
+        {
+            get => Model.SecondaryGuild;
+            set
+            {
+                Model.SecondaryGuild = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public decimal TimeGap
+        {
+            get => Model.TimeGap;
+            set
+            {
+                Model.TimeGap = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TimeGapString));
+            }
+        }
+
+        public string TimeGapString
+        {
+            get
+            {
+                if (Model.TimeGap == 0)
+                    return "";
+                return Model.TimeGap.ToString("F2");
+            }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    Model.TimeGap = 0;
+                    OnPropertyChanged(nameof(TimeGap));
+                    return;
+                }
+
+                //处理时分格式 (如 "14:32")
+                if (value.Contains(":"))
+                {
+                    Model.TimeGap = ParseTimeFormat(value);
+                }
+                else
+                {
+                    //处理小数格式 (如 "14.32")
+                    if (decimal.TryParse(value, out decimal result))
+                    {
+                        Model.TimeGap = result;
+                    }
+                }
+
+                OnPropertyChanged(nameof(TimeGap));
+            }
+        }
+
+        /// <summary>
+        /// 解析时分格式为小数小时
+        /// </summary>
+        /// <param name="timeString">时分字符串，如 "14:32"</param>
+        /// <returns>小数小时，如 14.53</returns>
+        private decimal ParseTimeFormat(string timeString)
+        {
+            try
+            {
+                var parts = timeString.Split(':');
+                if (parts.Length == 2)
+                {
+                    if (int.TryParse(parts[0], out int hours) && int.TryParse(parts[1], out int minutes))
+                    {
+                        // 将分钟转换为小数小时
+                        decimal decimalHours = hours + (decimal)minutes / 60;
+                        return decimalHours;
+                    }
+                }
+            }
+            catch
+            {
+                // 解析失败时返回0
+            }
+
+            return 0m;
+        }
+
+        public string ComingWeek
+        {
+            get => Model.ComingWeek;
+            set
+            {
+                Model.ComingWeek = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string GuildTypeName
+        {
+            get => Model.GetGuildTypeName();
+        }
+
+        public void ToggleGuildType()
+        {
+            Model.ToggleGuildType();
+            OnPropertyChanged(nameof(GuildTypeName));
+        }
+
+        public void GenerateMsg()
+        {
+            Model.GenerateMsg();
+            OnPropertyChanged(nameof(OutputMessage));
+        }
+
+        /// <summary>
+        /// 保存数据到JSON文件
+        /// </summary>
+        public void SaveData()
+        {
+            Save();
+        }
+
+        /// <summary>
+        /// 从JSON文件加载数据
+        /// </summary>
+        public void LoadData()
+        {
+            Load();
+        }
+    }
+}

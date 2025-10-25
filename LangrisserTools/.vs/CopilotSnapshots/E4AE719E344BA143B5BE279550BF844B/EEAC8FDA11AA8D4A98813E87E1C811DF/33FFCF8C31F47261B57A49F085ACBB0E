@@ -1,0 +1,233 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace TimeCalculatorForGuild.Models
+{
+    public class TimeCalculator
+    {
+        /// <summary>
+        /// 输出消息
+        /// </summary>
+        public string OutputMessage { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 输出消息模板
+        /// </summary>
+        public string OutputMessageTemplate { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 主公会
+        /// </summary>
+        public string MainGuild { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 副公会
+        /// </summary>
+        public string SecondaryGuild { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 时间间隔（小时，保留两位小数）
+        /// </summary>
+        public decimal TimeGap { get; set; }
+
+        /// <summary>
+        /// 即将到来的周
+        /// </summary>
+        public string ComingWeek { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 团类型：0=主团，1=副团
+        /// </summary>
+        public int GuildType { get; set; } = 0;
+
+        /// <summary>
+        /// 根据当前时间加上TimeGap计算新的日期时间
+        /// </summary>
+        /// <returns>计算后的新日期时间</returns>
+        public DateTime CalculateTime()
+        {
+            DateTime currentTime = DateTime.Now;
+            
+            // 将TimeGap转换为小时和分钟
+            int hours = (int)TimeGap;
+            int minutes = (int)((TimeGap - hours) * 60);
+            
+            return currentTime.AddHours(hours).AddMinutes(minutes);
+        }
+
+        /// <summary>
+        /// 计算调整时间并格式化为"周几(日期)几点"格式
+        /// </summary>
+        /// <returns>格式化后的时间字符串</returns>
+        public string CalculateAdjustedTime()
+        {
+            DateTime calculatedTime = CalculateTime();
+            
+            // 获取周几
+            string weekday = GetWeekdayName(calculatedTime.DayOfWeek);
+            
+            // 获取日期
+            string date = calculatedTime.ToString("MM.dd");
+            
+            // 时间取整到半小时
+            string time = RoundToHalfHour(calculatedTime);
+            
+            return $"{weekday}({date}){time}";
+        }
+
+        /// <summary>
+        /// 获取周几的中文名称
+        /// </summary>
+        /// <param name="dayOfWeek">星期几</param>
+        /// <returns>中文周几名称</returns>
+        private string GetWeekdayName(DayOfWeek dayOfWeek)
+        {
+            return dayOfWeek switch
+            {
+                DayOfWeek.Monday => "周一",
+                DayOfWeek.Tuesday => "周二",
+                DayOfWeek.Wednesday => "周三",
+                DayOfWeek.Thursday => "周四",
+                DayOfWeek.Friday => "周五",
+                DayOfWeek.Saturday => "周六",
+                DayOfWeek.Sunday => "周日",
+                _ => "未知"
+            };
+        }
+
+        /// <summary>
+        /// 获取团类型名称
+        /// </summary>
+        /// <returns>团类型名称</returns>
+        public string GetGuildTypeName()
+        {
+            return GuildType == 0 ? "主团" : "副团";
+        }
+
+        /// <summary>
+        /// 切换团类型
+        /// </summary>
+        public void ToggleGuildType()
+        {
+            GuildType = GuildType == 0 ? 1 : 0;
+        }
+
+        /// <summary>
+        /// 将时间取整到半小时（向后取整）
+        /// </summary>
+        /// <param name="dateTime">要取整的时间</param>
+        /// <returns>取整后的时间字符串</returns>
+        private string RoundToHalfHour(DateTime dateTime)
+        {
+            int hour = dateTime.Hour;
+            int minute = dateTime.Minute;
+            
+            // 如果分钟数大于30，小时加1，分钟设为0
+            if (minute > 30)
+            {
+                hour += 1;
+                minute = 0;
+            }
+            // 如果分钟数在1-30之间，分钟设为30
+            else if (minute > 0)
+            {
+                minute = 30;
+            }
+            // 如果分钟数为0，保持不变
+            
+            // 处理小时超过24的情况
+            if (hour >= 24)
+            {
+                hour -= 24;
+            }
+            
+            // 格式化输出
+            if (minute == 0)
+            {
+                return $"{hour}点";
+            }
+            else
+            {
+                return $"{hour}点半";
+            }
+        }
+
+        /// <summary>
+        /// 计算下一周的范围（周一为第一天）
+        /// </summary>
+        /// <returns>下一周范围的字符串，格式为MM.DD ~ MM.DD</returns>
+        public string CalculateComingWeek()
+        {
+            DateTime today = DateTime.Now;
+            
+            // 计算当前日期是本周的第几天（周一为第0天）
+            int currentDayOfWeek = ((int)today.DayOfWeek + 6) % 7; // 将周日(0)转换为6，周一(1)转换为0
+            
+            // 计算下周一（下一周的第一天）
+            DateTime nextMonday = today.AddDays(7 - currentDayOfWeek);
+            
+            // 计算下周日（下一周的最后一天）
+            DateTime nextSunday = nextMonday.AddDays(6);
+            
+            // 格式化为MM.DD ~ MM.DD
+            return $"{nextMonday:MM.dd} ~ {nextSunday:MM.dd}";
+        }
+
+        /// <summary>
+        /// 结合OutputMessage, MainGuild, SecondaryGuild以及CalculateTime的结果生成新的OutputMessage
+        /// </summary>
+        public void GenerateMsg()
+        {
+            DateTime calculatedTime = CalculateTime();
+            
+            // 自动计算下一周范围
+            ComingWeek = CalculateComingWeek();
+            
+            // 如果模板为空，使用默认格式
+            if (string.IsNullOrWhiteSpace(OutputMessageTemplate))
+            {
+                OutputMessage = $"{MainGuild} - {SecondaryGuild} | 计算时间: {calculatedTime:yyyy-MM-dd HH:mm:ss}";
+                return;
+            }
+            
+            // 使用模板生成消息
+            OutputMessage = ProcessTemplate(OutputMessageTemplate, calculatedTime);
+        }
+
+        /// <summary>
+        /// 处理模板，替换变量为实际值
+        /// </summary>
+        /// <param name="template">模板字符串</param>
+        /// <param name="calculatedTime">计算后的时间</param>
+        /// <returns>处理后的消息</returns>
+        private string ProcessTemplate(string template, DateTime calculatedTime)
+        {
+            string result = template;
+            
+            // 定义可用的变量映射
+            var variables = new Dictionary<string, string>
+            {
+                { "MainGuild", MainGuild },
+                { "SecondaryGuild", SecondaryGuild },
+                { "TimeGap", TimeGap.ToString("F2") },
+                { "ComingWeek", ComingWeek },
+                { "GuildOfComingWeek", GetGuildTypeName() },
+                { "CalculatedTime", calculatedTime.ToString("yyyy-MM-dd HH:mm:ss") },
+                { "CalculatedDate", calculatedTime.ToString("yyyy-MM-dd") },
+                { "CalculatedTimeOnly", calculatedTime.ToString("HH:mm:ss") },
+                { "AdjustedTime", CalculateAdjustedTime() },
+                { "CurrentTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") },
+                { "CurrentDate", DateTime.Now.ToString("yyyy-MM-dd") }
+            };
+            
+            // 替换所有变量，使用{变量名}语法
+            foreach (var variable in variables)
+            {
+                string placeholder = $"{{{variable.Key}}}";
+                result = result.Replace(placeholder, variable.Value);
+            }
+            
+            return result;
+        }
+    }
+}

@@ -1,0 +1,74 @@
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Windows;
+
+namespace LangrisserTools.Main
+{
+    /// <summary>
+    /// 兰古利萨工具集主界面
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        /// <summary>
+        /// 三本团时间计算工具按钮点击事件
+        /// </summary>
+        private void TimeCalculatorButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // 获取 TimeCalculatorForGuild 项目的可执行文件路径
+                var solutionRoot = GetSolutionRoot();
+                var executablePath = Path.Combine(solutionRoot, "TimeCalculatorForGuild", "bin", "Debug", "net10.0-windows", "TimeCalculatorForGuild.exe");
+                
+                if (File.Exists(executablePath))
+                {
+                    // 启动 TimeCalculatorForGuild 应用
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = executablePath,
+                        UseShellExecute = true
+                    });
+                }
+                else
+                {
+                    MessageBox.Show($"找不到三本团时间计算工具的可执行文件：\n{executablePath}\n\n请确保项目已正确编译。", 
+                                  "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"启动三本团时间计算工具时发生错误：\n{ex.Message}", 
+                              "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// 获取解决方案根目录
+        /// </summary>
+        /// <returns>解决方案根目录路径</returns>
+        private string GetSolutionRoot()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var directory = new DirectoryInfo(currentDirectory);
+
+            // 向上查找包含 .slnx 文件的目录
+            while (directory != null)
+            {
+                if (Directory.GetFiles(directory.FullName, "*.slnx").Length > 0)
+                {
+                    return directory.FullName;
+                }
+                directory = directory.Parent;
+            }
+
+            // 如果找不到解决方案文件，返回当前目录
+            return currentDirectory;
+        }
+    }
+}

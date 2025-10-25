@@ -1,0 +1,82 @@
+using System;
+using System.Globalization;
+using System.Windows.Data;
+
+namespace LangrisserTools.TimeCalculatorForGuild.Helpers
+{
+    /// <summary>
+    /// 时间格式转换器，支持小数和时分格式
+    /// </summary>
+    public class TimeFormatConverter : IValueConverter
+    {
+        /// <summary>
+        /// 从模型值转换为界面值（string）
+        /// </summary>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is decimal decimalValue)
+            {
+                // 只显示非零值，避免干扰用户输入
+                if (decimalValue == 0)
+                    return "";
+                return decimalValue.ToString("F2", culture);
+            }
+            return "";
+        }
+
+        /// <summary>
+        /// 从界面值转换为模型值（decimal）
+        /// </summary>
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string stringValue)
+            {
+                // 空值或空白值返回0
+                if (string.IsNullOrWhiteSpace(stringValue))
+                    return 0m;
+                
+                // 处理时分格式 (如 "14:32")
+                if (stringValue.Contains(":"))
+                {
+                    return ParseTimeFormat(stringValue);
+                }
+                
+                // 处理小数格式 (如 "14.32")
+                if (decimal.TryParse(stringValue, NumberStyles.Number, culture, out decimal result))
+                {
+                    return result;
+                }
+            }
+            
+            return 0m;
+        }
+
+        /// <summary>
+        /// 解析时分格式为小数小时
+        /// </summary>
+        /// <param name="timeString">时分字符串，如 "14:32"</param>
+        /// <returns>小数小时，如 14.53</returns>
+        private decimal ParseTimeFormat(string timeString)
+        {
+            try
+            {
+                var parts = timeString.Split(':');
+                if (parts.Length == 2)
+                {
+                    if (int.TryParse(parts[0], out int hours) && int.TryParse(parts[1], out int minutes))
+                    {
+                        // 将分钟转换为小数小时
+                        decimal decimalHours = hours + (decimal)minutes / 60;
+                        return decimalHours;
+                    }
+                }
+            }
+            catch
+            {
+                // 解析失败时返回0
+            }
+            
+            return 0m;
+        }
+    }
+}

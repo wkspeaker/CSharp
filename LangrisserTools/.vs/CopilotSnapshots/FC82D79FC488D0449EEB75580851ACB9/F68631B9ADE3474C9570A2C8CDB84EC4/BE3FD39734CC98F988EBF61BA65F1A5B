@@ -1,0 +1,108 @@
+﻿using System;
+using System.IO;
+
+namespace LangrisserTools.Core.Services
+{
+    /// <summary>
+    /// 统一数据路径管理服务
+    /// 支持项目内数据存储和统一数据目录两种模式
+    /// </summary>
+    public class DataPathService
+    {
+        private static readonly Lazy<DataPathService> _instance = new Lazy<DataPathService>(() => new DataPathService());
+        public static DataPathService Instance => _instance.Value;
+
+        private DataPathService() { }
+
+        /// <summary>
+        /// 获取工具的数据目录路径
+        /// </summary>
+        /// <param name="toolName">工具名称</param>
+        /// <param name="useUnifiedPath">是否使用统一路径模式，null时使用配置</param>
+        /// <returns>数据目录路径</returns>
+        public string GetDataDirectory(string toolName, bool? useUnifiedPath = null)
+        {
+            // 如果未指定，使用配置
+            var useUnified = useUnifiedPath ?? DataPathConfiguration.Instance.UseUnifiedPath;
+            
+            if (useUnified)
+            {
+                // 统一路径模式：Data/{ToolName}/
+                var solutionRoot = GetSolutionRoot();
+                var dataRoot = DataPathConfiguration.Instance.UnifiedDataRoot;
+                return Path.Combine(solutionRoot, dataRoot, toolName);
+            }
+            else
+            {
+                // 项目内路径模式：{ToolName}/Data/
+                // using System.Reflection; // 如需用 Assembly
+                var appDir = AppContext.BaseDirectory; // 更可靠且不依赖调用进程的工作目录
+                return Path.Combine(appDir, "Data");
+            }
+        }
+
+        /// <summary>
+        /// 获取工具的数据文件路径
+        /// </summary>
+        /// <param name="toolName">工具名称</param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="useUnifiedPath">是否使用统一路径模式</param>
+        /// <returns>数据文件完整路径</returns>
+        public string GetDataFilePath(string toolName, string fileName, bool? useUnifiedPath = null)
+        {
+            var dataDirectory = GetDataDirectory(toolName, useUnifiedPath);
+            EnsureDirectoryExists(dataDirectory);
+            return Path.Combine(dataDirectory, fileName);
+        }
+
+        /// <summary>
+        /// 确保数据目录存在
+        /// </summary>
+        /// <param name="directoryPath">目录路径</param>
+        public void EnsureDirectoryExists(string directoryPath)
+        {
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+        }
+
+        /// <summary>
+        /// 获取解决方案根目录
+        /// </summary>
+        /// <returns>解决方案根目录路径</returns>
+        public string GetSolutionRoot()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var directory = new DirectoryInfo(currentDirectory);
+
+            // 向上查找包含 .slnx 文件的目录
+            while (directory != null)
+            {
+                if (Directory.GetFiles(directory.FullName, "*.sln").Length > 0)
+                {
+                    return directory.FullName;
+                }
+                directory = directory.Parent;
+            }
+
+            // 如果找不到解决方案文件，返回当前目录
+            return currentDirectory;
+        }
+
+        /// <summary>
+        /// 获取所有工具的数据目录（统一路径模式）
+        /// </summary>
+        /// <returns>所有工具数据目录路径</returns>
+        public string[] GetAllToolDataDirectories()
+        {
+            var solutionRoot = GetSolutionRoot();
+            var dataRoot = Path.Combine(solutionRoot, "Data");
+            
+            if (!Directory.Exists(dataRoot))
+                return new string[0];
+
+            return Directory.GetDirectories(dataRoot);
+        }
+    }
+}

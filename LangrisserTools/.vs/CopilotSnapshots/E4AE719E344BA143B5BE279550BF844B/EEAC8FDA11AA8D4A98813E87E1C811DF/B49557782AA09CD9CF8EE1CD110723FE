@@ -1,0 +1,103 @@
+﻿using System;
+using System.Threading.Tasks;
+using LangrisserTools.Core.Services;
+using LangrisserTools.TimeCalculatorForGuild.Models;
+
+namespace LangrisserTools.TimeCalculatorForGuild.Services
+{
+    /// <summary>
+    /// 三本团时间计算工具的数据服务
+    /// 继承自 Core 的通用数据服务基类
+    /// </summary>
+    public class TimeCalculatorDataService : DataService<TimeCalculator>
+    {
+        private const string DATA_FILE_NAME = "GuildInfo.json";
+
+        public TimeCalculatorDataService() : base("TimeCalculatorForGuild")
+        {
+        }
+
+        /// <summary>
+        /// 加载数据（使用默认文件名）
+        /// </summary>
+        /// <returns>加载的 TimeCalculator 对象</returns>
+        public override TimeCalculator LoadData()
+        {
+            try
+            {
+                var path = DataPathService.GetDataFilePath(ToolName, DATA_FILE_NAME, null, false);
+                Console.WriteLine($"[TimeCalculatorDataService] Loading data from: {path}");
+                var result = LoadData(DATA_FILE_NAME);
+                Console.WriteLine($"[TimeCalculatorDataService] Load completed. Found file: {System.IO.File.Exists(path)}");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[TimeCalculatorDataService] LoadData error: {ex}");
+                return new TimeCalculator();
+            }
+        }
+
+        /// <summary>
+        /// 异步加载数据（使用默认文件名）
+        /// </summary>
+        /// <returns>加载的 TimeCalculator 对象</returns>
+        public async Task<TimeCalculator> LoadDataAsync()
+        {
+            try
+            {
+                var path = DataPathService.GetDataFilePath(ToolName, DATA_FILE_NAME, null, false);
+                Console.WriteLine($"[TimeCalculatorDataService] Loading data async from: {path}");
+                var result = await LoadDataAsync(DATA_FILE_NAME);
+                Console.WriteLine($"[TimeCalculatorDataService] Async load completed. Found file: {System.IO.File.Exists(path)}");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[TimeCalculatorDataService] LoadDataAsync error: {ex}");
+                return new TimeCalculator();
+            }
+        }
+
+        /// <summary>
+        /// 保存数据（使用默认文件名）
+        /// </summary>
+        /// <param name="timeCalculator">要保存的 TimeCalculator 对象</param>
+        public override void SaveData(TimeCalculator timeCalculator)
+        {
+            try
+            {
+                var path = DataPathService.GetDataFilePath(ToolName, DATA_FILE_NAME, null, true);
+                Console.WriteLine($"[TimeCalculatorDataService] Saving data to: {path}");
+                SaveData(timeCalculator, DATA_FILE_NAME);
+                Console.WriteLine($"[TimeCalculatorDataService] Save completed.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[TimeCalculatorDataService] SaveData error: {ex}");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 异步保存数据（使用默认文件名）
+        /// </summary>
+        /// <param name="timeCalculator">要保存的 TimeCalculator 对象</param>
+        public async Task SaveDataAsync(TimeCalculator timeCalculator)
+        {
+            try
+            {
+                var path = DataPathService.GetDataFilePath(ToolName, DATA_FILE_NAME, null, true);
+                Console.WriteLine($"[TimeCalculatorDataService] Saving data async to: {path}");
+                await SaveDataAsync(timeCalculator, DATA_FILE_NAME);
+                Console.WriteLine($"[TimeCalculatorDataService] Async save completed.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[TimeCalculatorDataService] SaveDataAsync error: {ex}");
+                throw;
+            }
+        }
+    }
+}
+

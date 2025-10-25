@@ -1,0 +1,12 @@
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Core\obj\Debug\net10.0\LangrisserTools.Core.GeneratedMSBuildEditorConfig.editorconfig
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Core\obj\Debug\net10.0\LangrisserTools.Core.AssemblyInfoInputs.cache
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Core\obj\Debug\net10.0\LangrisserTools.Core.AssemblyInfo.cs
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Core\obj\Debug\net10.0\LangrisserTools.Core.csproj.CoreCompileInputs.cache
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Core\obj\Debug\net10.0\LangrisserTools.Core.sourcelink.json
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Core\bin\Debug\net10.0\LangrisserTools.Core.deps.json
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Core\bin\Debug\net10.0\LangrisserTools.Core.dll
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Core\bin\Debug\net10.0\LangrisserTools.Core.pdb
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Core\obj\Debug\net10.0\LangrisserTools.Core.dll
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Core\obj\Debug\net10.0\refint\LangrisserTools.Core.dll
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Core\obj\Debug\net10.0\LangrisserTools.Core.pdb
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Core\obj\Debug\net10.0\ref\LangrisserTools.Core.dll

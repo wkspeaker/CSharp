@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>LangrisserTools.Main</AssemblyName>
+    <RootNamespace>LangrisserTools.Main</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Prism.Wpf" Version="9.0.537" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LangrisserTools.Core\LangrisserTools.Core.csproj" />
+  </ItemGroup>
+
+</Project>
