@@ -1,0 +1,197 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace LangrisserTools.TmpActivityCalculation.Services
+{
+ /// <summary>
+ ///计算达到指定 A/B/C 奖励所需的最小行动次数（新规则，使用贪心边际收益策略）
+ /// </summary>
+ public static class RoundsCalculator
+ {
+ public sealed class RoundsResult
+ {
+ public bool Possible { get; init; }
+ public int TotalRounds { get; init; }
+ public int TotalSaladUses { get; init; }
+ public int TotalNormalUses { get; init; }
+ // per-category counts in order A,B,C
+ public int[] SaladUsesPerCategory { get; init; } = new int[3];
+ public int[] NormalUsesPerCategory { get; init; } = new int[3];
+
+ // produced amounts for verification
+ public long[] ProducedBySaladPerCategory { get; init; } = new long[3];
+ public long[] ProducedByNormalPerCategory { get; init; } = new long[3];
+ public long[] TotalProducedPerCategory { get; init; } = new long[3];
+ }
+
+ /// <summary>
+ ///计算最少行动次数
+ /// </summary>
+ public static RoundsResult CalculateMinimumRounds(
+ int needA, int needB, int needC,
+ int saladAmount, int normalAmount,
+ int maxSaladUses =40)
+ {
+ if (needA <0 || needB <0 || needC <0)
+ throw new ArgumentException("需要的奖励数量不得为负数。");
+ if (maxSaladUses <0) throw new ArgumentException("maxSaladUses不能为负数。");
+ if (saladAmount <0 || normalAmount <0) throw new ArgumentException("奖励数量不能为负数。");
+
+ // Edge cases
+ if (saladAmount ==0 && normalAmount ==0)
+ {
+ if (needA ==0 && needB ==0 && needC ==0)
+ {
+ return new RoundsResult { Possible = true, TotalRounds =0, TotalSaladUses =0, TotalNormalUses =0 };
+ }
+ return new RoundsResult { Possible = false, TotalRounds = -1 };
+ }
+
+ int[] needs = new int[] { needA, needB, needC };
+ int[] sUses = new int[3];
+
+ // If normalAmount ==0, we must cover that category entirely with salads
+ int mandatorySalad =0;
+ if (normalAmount ==0)
+ {
+ if (saladAmount ==0)
+ {
+ // handled above
+ return new RoundsResult { Possible = false, TotalRounds = -1 };
+ }
+
+ for (int i =0; i <3; i++)
+ {
+ if (needs[i] >0)
+ {
+ int req = (int)CeilDiv(needs[i], saladAmount);
+ sUses[i] = req;
+ mandatorySalad += req;
+ }
+ }
+
+ if (mandatorySalad > maxSaladUses)
+ {
+ return new RoundsResult { Possible = false, TotalRounds = -1 };
+ }
+ }
+
+ int remainingSaladBudget = maxSaladUses - mandatorySalad;
+
+ // compute initial required normals after mandatory salads
+ long[] rem = new long[3];
+ long[] reqNormal = new long[3];
+ for (int i =0; i <3; i++)
+ {
+ rem[i] = Math.Max(0, (long)needs[i] - (long)sUses[i] * saladAmount);
+ reqNormal[i] = (normalAmount >0) ? CeilDiv(rem[i], normalAmount) : (rem[i] ==0 ?0 : long.MaxValue);
+ }
+
+ // If already impossible
+ if (reqNormal[0] == long.MaxValue || reqNormal[1] == long.MaxValue || reqNormal[2] == long.MaxValue)
+ {
+ return new RoundsResult { Possible = false, TotalRounds = -1 };
+ }
+
+ // Greedy: each potential extra salad use for a category yields a reduction in required normal uses = delta
+ // net gain in total actions =1 - delta. We pick uses with delta >=2 (i.e., net decrease) first.
+
+ // PriorityQueue available in .NET: priority = -delta to get max delta
+ var pq = new PriorityQueue<int, int>(); // element: category index, priority: -delta (so smaller priority = larger delta)
+
+ // compute current delta for next salad use for each category and push
+ for (int i =0; i <3; i++)
+ {
+ int currentS = sUses[i];
+ int delta = ComputeDelta(needs[i], saladAmount, normalAmount, currentS);
+ if (delta >0)
+ {
+ pq.Enqueue(i, -delta);
+ }
+ }
+
+ while (remainingSaladBudget >0 && pq.Count >0)
+ {
+ // peek top
+ pq.TryDequeue(out int cat, out int negDelta);
+ int delta = -negDelta;
+
+ // we only take if delta >=2 (net decrease in total actions)
+ if (delta <2)
+ {
+ // no further beneficial single-use; stop
+ break;
+ }
+
+ // apply one salad use to this category
+ sUses[cat]++;
+ remainingSaladBudget--;
+
+ // update rem and reqNormal
+ rem[cat] = Math.Max(0, (long)needs[cat] - (long)sUses[cat] * saladAmount);
+ reqNormal[cat] = (normalAmount >0) ? CeilDiv(rem[cat], normalAmount) : (rem[cat] ==0 ?0 : long.MaxValue);
+
+ // push next potential for this category
+ int nextDelta = ComputeDelta(needs[cat], saladAmount, normalAmount, sUses[cat]);
+ if (nextDelta >0)
+ pq.Enqueue(cat, -nextDelta);
+ }
+
+ // After greedy picks, compute final required normal uses
+ for (int i =0; i <3; i++)
+ {
+ rem[i] = Math.Max(0, (long)needs[i] - (long)sUses[i] * saladAmount);
+ reqNormal[i] = (normalAmount >0) ? CeilDiv(rem[i], normalAmount) : (rem[i] ==0 ?0 : long.MaxValue);
+ }
+
+ if (reqNormal[0] == long.MaxValue || reqNormal[1] == long.MaxValue || reqNormal[2] == long.MaxValue)
+ {
+ return new RoundsResult { Possible = false, TotalRounds = -1 };
+ }
+
+ long totalNormal = reqNormal[0] + reqNormal[1] + reqNormal[2];
+ int totalSal = sUses[0] + sUses[1] + sUses[2];
+ long totalActions = totalSal + totalNormal;
+
+ // result
+ var result = new RoundsResult
+ {
+ Possible = true,
+ TotalRounds = (int)totalActions,
+ TotalSaladUses = totalSal,
+ TotalNormalUses = (int)totalNormal,
+ SaladUsesPerCategory = new int[] { sUses[0], sUses[1], sUses[2] },
+ NormalUsesPerCategory = new int[] { (int)reqNormal[0], (int)reqNormal[1], (int)reqNormal[2] }
+ };
+
+ // produced amounts
+ for (int i =0; i <3; i++)
+ {
+ result.ProducedBySaladPerCategory[i] = (long)result.SaladUsesPerCategory[i] * saladAmount;
+ result.ProducedByNormalPerCategory[i] = (long)result.NormalUsesPerCategory[i] * normalAmount;
+ result.TotalProducedPerCategory[i] = result.ProducedBySaladPerCategory[i] + result.ProducedByNormalPerCategory[i];
+ }
+
+ return result;
+ }
+
+ // compute how many normal uses would be reduced by adding one more salad use at current s
+ private static int ComputeDelta(int need, int saladAmount, int normalAmount, int currentS)
+ {
+ long remBefore = Math.Max(0, (long)need - (long)currentS * saladAmount);
+ long reqBefore = (normalAmount >0) ? CeilDiv(remBefore, normalAmount) : (remBefore ==0 ?0 : long.MaxValue);
+
+ long remAfter = Math.Max(0, (long)need - (long)(currentS +1) * saladAmount);
+ long reqAfter = (normalAmount >0) ? CeilDiv(remAfter, normalAmount) : (remAfter ==0 ?0 : long.MaxValue);
+
+ if (reqBefore == long.MaxValue || reqAfter == long.MaxValue) return 0;
+ return (int)(reqBefore - reqAfter);
+ }
+
+ private static long CeilDiv(long numerator, long denominator)
+ {
+ if (denominator <=0) throw new ArgumentException("分母必须为正数。", nameof(denominator));
+ return (numerator + denominator -1) / denominator;
+ }
+ }
+}

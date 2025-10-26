@@ -1,0 +1,109 @@
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Windows;
+using System.Windows.Input;
+using LangrisserTools.TmpActivityCalculation.Services;
+
+namespace LangrisserTools.TmpActivityCalculation.ViewModels
+{
+ public class RoundsViewModel : INotifyPropertyChanged, IDataErrorInfo
+ {
+ private int _needA;
+ private int _needB;
+ private int _needC;
+ private int _saladAmount;
+ private int _normalAmount;
+ private int _maxSalad;
+ private string _resultText = string.Empty;
+
+ public RoundsViewModel()
+ {
+ CalculateCommand = new RelayCommand(_ => Calculate(), _ => CanCalculate);
+ // defaults
+ NeedA =0; NeedB =0; NeedC =0;
+ SaladAmount =75; NormalAmount =1; MaxSalad =40;
+ }
+
+ public int NeedA { get => _needA; set { _needA = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+ public int NeedB { get => _needB; set { _needB = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+ public int NeedC { get => _needC; set { _needC = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+ public int SaladAmount { get => _saladAmount; set { _saladAmount = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+ public int NormalAmount { get => _normalAmount; set { _normalAmount = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+ public int MaxSalad { get => _maxSalad; set { _maxSalad = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+
+ public string ResultText { get => _resultText; set { _resultText = value; OnPropertyChanged(); } }
+
+ public ICommand CalculateCommand { get; }
+
+ public bool CanCalculate => ValidateAll();
+
+ private bool ValidateAll()
+ {
+ // simple validation: non-negative, salad/normal not both zero when needs>0
+ if (NeedA <0 || NeedB <0 || NeedC <0) return false;
+ if (MaxSalad <0) return false;
+ if (SaladAmount <0 || NormalAmount <0) return false;
+ if (NeedA ==0 && NeedB ==0 && NeedC ==0) return true;
+ if (SaladAmount ==0 && NormalAmount ==0) return false;
+ return true;
+ }
+
+ private void Calculate()
+ {
+ try
+ {
+ var res = RoundsCalculator.CalculateMinimumRounds(NeedA, NeedB, NeedC, SaladAmount, NormalAmount, MaxSalad);
+ var sb = new StringBuilder();
+ if (!res.Possible)
+ {
+ sb.AppendLine("无可行解");
+ }
+ else
+ {
+ sb.AppendLine($"最少总行动次数: {res.TotalRounds}");
+ sb.AppendLine($"色拉总次数: {res.TotalSaladUses}");
+ sb.AppendLine($"普通总次数: {res.TotalNormalUses}");
+ sb.AppendLine();
+ sb.AppendLine("分配 A | B | C (色拉 | 普通 |由色拉产出 |由普通产出 | 合计产出 ):");
+ for (int i =0; i <3; i++)
+ {
+ string cat = i ==0 ? "A" : i ==1 ? "B" : "C";
+ sb.AppendLine($"{cat} : {res.SaladUsesPerCategory[i]} | {res.NormalUsesPerCategory[i]} | {res.ProducedBySaladPerCategory[i]} | {res.ProducedByNormalPerCategory[i]} | {res.TotalProducedPerCategory[i]}");
+ }
+ }
+ ResultText = sb.ToString();
+ }
+ catch (Exception ex)
+ {
+ MessageBox.Show($"计算失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+ }
+ }
+
+ #region INotifyPropertyChanged
+ public event PropertyChangedEventHandler? PropertyChanged;
+ protected void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+ #endregion
+
+ #region IDataErrorInfo
+ public string Error => null;
+ public string this[string columnName]
+ {
+ get
+ {
+ switch (columnName)
+ {
+ case nameof(NeedA): if (NeedA <0) return "不能为负数"; break;
+ case nameof(NeedB): if (NeedB <0) return "不能为负数"; break;
+ case nameof(NeedC): if (NeedC <0) return "不能为负数"; break;
+ case nameof(SaladAmount): if (SaladAmount <0) return "不能为负数"; break;
+ case nameof(NormalAmount): if (NormalAmount <0) return "不能为负数"; break;
+ case nameof(MaxSalad): if (MaxSalad <0) return "不能为负数"; break;
+ }
+ return string.Empty;
+ }
+ }
+ #endregion
+ }
+}

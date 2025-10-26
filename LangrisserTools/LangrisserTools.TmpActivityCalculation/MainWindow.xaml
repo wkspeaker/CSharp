@@ -1,0 +1,50 @@
+﻿<Window x:Class="LangrisserTools.TmpActivityCalculation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LangrisserTools.TmpActivityCalculation"
+        xmlns:vm="clr-namespace:LangrisserTools.TmpActivityCalculation.ViewModels"
+        mc:Ignorable="d"
+        Title="Rounds Calculator" Height="560" Width="900">
+    <Window.DataContext>
+        <vm:RoundsViewModel />
+    </Window.DataContext>
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="目标需求 (A / B / C / D):" VerticalAlignment="Center" Margin="0,0,8,0" />
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+            <TextBox Width="80" Margin="0,0,8,0" Text="{Binding NeedA, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <TextBox Width="80" Margin="0,0,8,0" Text="{Binding NeedB, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <TextBox Width="80" Margin="0,0,8,0" Text="{Binding NeedC, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <TextBox Width="80" Text="{Binding NeedD, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="色拉奖励每次产出 (单值):" VerticalAlignment="Center" Margin="0,8,8,0" />
+        <TextBox Grid.Row="1" Grid.Column="1" Width="120" Margin="0,8,0,0" Text="{Binding SaladAmount, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="普通奖励每次产出 (单值):" VerticalAlignment="Center" Margin="0,8,8,0" />
+        <TextBox Grid.Row="2" Grid.Column="1" Width="120" Margin="0,8,0,0" Text="{Binding NormalAmount, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="色拉最大使用次数:" VerticalAlignment="Center" Margin="0,8,8,0" />
+        <TextBox Grid.Row="3" Grid.Column="1" Width="80" Margin="0,8,0,0" Text="{Binding MaxSalad, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+
+        <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="计算最少行动次数" Height="36" Margin="0,12,0,12" Command="{Binding CalculateCommand}" />
+
+        <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Text="{Binding ResultText}" />
+    </Grid>
+</Window>

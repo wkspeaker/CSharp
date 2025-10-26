@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "LangrisserTools.TmpActivityCalculator/1.0.0": {
+        "runtime": {
+          "LangrisserTools.TmpActivityCalculator.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LangrisserTools.TmpActivityCalculator/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

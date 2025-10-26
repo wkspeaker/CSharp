@@ -1,0 +1,82 @@
+﻿using System;
+using System.Threading.Tasks;
+using LangrisserTools.Core.Services;
+using LangrisserTools.TmpActivityCalculation.Models;
+
+namespace LangrisserTools.TmpActivityCalculation.Services
+{
+ public class ActivityRewardDataService : DataService<ActivityReward>
+ {
+ private const string DATA_FILE_NAME = "ActivityReward.json";
+
+ public ActivityRewardDataService() : base("TmpActivityCalculation")
+ {
+ }
+
+ public override ActivityReward LoadData()
+ {
+ try
+ {
+ var path = DataPathService.GetDataFilePath(ToolName, DATA_FILE_NAME, null, false);
+ Console.WriteLine($"[ActivityRewardDataService] Loading data from: {path}");
+ var result = LoadData(DATA_FILE_NAME);
+ Console.WriteLine($"[ActivityRewardDataService] Load completed. Found file: {System.IO.File.Exists(path)}");
+ return result;
+ }
+ catch (Exception ex)
+ {
+ Console.WriteLine($"[ActivityRewardDataService] LoadData error: {ex}");
+ return new ActivityReward();
+ }
+ }
+
+ public async Task<ActivityReward> LoadDataAsync()
+ {
+ try
+ {
+ var path = DataPathService.GetDataFilePath(ToolName, DATA_FILE_NAME, null, false);
+ Console.WriteLine($"[ActivityRewardDataService] Loading data async from: {path}");
+ var result = await LoadDataAsync(DATA_FILE_NAME);
+ Console.WriteLine($"[ActivityRewardDataService] Async load completed. Found file: {System.IO.File.Exists(path)}");
+ return result;
+ }
+ catch (Exception ex)
+ {
+ Console.WriteLine($"[ActivityRewardDataService] LoadDataAsync error: {ex}");
+ return new ActivityReward();
+ }
+ }
+
+ public override void SaveData(ActivityReward data)
+ {
+ try
+ {
+ var path = DataPathService.GetDataFilePath(ToolName, DATA_FILE_NAME, null, true);
+ Console.WriteLine($"[ActivityRewardDataService] Saving data to: {path}");
+ SaveData(data, DATA_FILE_NAME);
+ Console.WriteLine("[ActivityRewardDataService] Save completed.");
+ }
+ catch (Exception ex)
+ {
+ Console.WriteLine($"[ActivityRewardDataService] SaveData error: {ex}");
+ throw;
+ }
+ }
+
+ public async Task SaveDataAsync(ActivityReward data)
+ {
+ try
+ {
+ var path = DataPathService.GetDataFilePath(ToolName, DATA_FILE_NAME, null, true);
+ Console.WriteLine($"[ActivityRewardDataService] Saving data async to: {path}");
+ await SaveDataAsync(data, DATA_FILE_NAME);
+ Console.WriteLine("[ActivityRewardDataService] Async save completed.");
+ }
+ catch (Exception ex)
+ {
+ Console.WriteLine($"[ActivityRewardDataService] SaveDataAsync error: {ex}");
+ throw;
+ }
+ }
+ }
+}

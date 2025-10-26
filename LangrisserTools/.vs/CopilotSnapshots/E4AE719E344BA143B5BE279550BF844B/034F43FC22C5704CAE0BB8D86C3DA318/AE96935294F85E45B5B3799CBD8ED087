@@ -1,0 +1,109 @@
+﻿using System;
+
+namespace LangrisserTools.TmpActivityCalculation.Services
+{
+ /// <summary>
+ ///计算达到指定 A/B/C 奖励所需的最小行动次数。
+ ///解释：每次行动可以选择“色拉奖励”或“普通奖励”。
+ /// - 色拉奖励每次产生 (saladA, saladB, saladC) 个 A/B/C 奖励，且色拉奖励总次数不能超过 maxSaladUses（默认40）。
+ /// - 普通奖励每次产生 (normalA, normalB, normalC) 个 A/B/C 奖励，普通奖励次数不限。
+ /// 问题：求使得 A/B/C 三类奖励均达到或超过目标所需的最少总行动次数（色拉次数 + 普通次数）。
+ /// 算法：枚举色拉次数 s ∈ [0, maxSaladUses]，计算在该 s 下各类剩余需求，
+ /// 然后根据普通奖励的产出计算需要的最少普通次数 n（取各类需求的上界），取全局最小。
+ /// 如对于某个 s，普通奖励无法满足剩余需求（对应产出为0 且剩余需求 >0），则该 s 不可行。
+ /// </summary>
+ public static class RoundsCalculator
+ {
+ public sealed class RoundsResult
+ {
+ public bool Possible { get; init; }
+ public int TotalRounds { get; init; }
+ public int SaladUses { get; init; }
+ public int NormalUses { get; init; }
+ }
+
+ /// <summary>
+ ///计算最少行动次数
+ /// </summary>
+ /// <param name="needA">目标 A 类奖励数量（非负）</param>
+ /// <param name="needB">目标 B 类奖励数量（非负）</param>
+ /// <param name="needC">目标 C 类奖励数量（非负）</param>
+ /// <param name="saladA">色拉奖励每次获得的 A 数量（>=0）</param>
+ /// <param name="saladB">色拉奖励每次获得的 B 数量（>=0）</param>
+ /// <param name="saladC">色拉奖励每次获得的 C 数量（>=0）</param>
+ /// <param name="normalA">普通奖励每次获得的 A 数量（>=0）</param>
+ /// <param name="normalB">普通奖励每次获得的 B 数量（>=0）</param>
+ /// <param name="normalC">普通奖励每次获得的 C 数量（>=0）</param>
+ /// <param name="maxSaladUses">色拉奖励最大可用次数（默认40）</param>
+ /// <returns>若 Possible==true 则包含最优解；否则表示无解（例如两类奖励产出均为0 而需要正数）</returns>
+ public static RoundsResult CalculateMinimumRounds(
+ int needA, int needB, int needC,
+ int saladA, int saladB, int saladC,
+ int normalA, int normalB, int normalC,
+ int maxSaladUses =40)
+ {
+ if (needA <0 || needB <0 || needC <0)
+ throw new ArgumentException("需要的奖励数量不得为负数。");
+ if (maxSaladUses <0) throw new ArgumentException("maxSaladUses不能为负数。");
+
+ // 最差情形为不可能，记录最优方案
+ bool found = false;
+ int bestTotal = int.MaxValue;
+ int bestS =0, bestN =0;
+
+ for (int s =0; s <= maxSaladUses; s++)
+ {
+ //计算使用 s 次色拉后剩余需要
+ long remA = Math.Max(0, needA - (long)s * saladA);
+ long remB = Math.Max(0, needB - (long)s * saladB);
+ long remC = Math.Max(0, needC - (long)s * saladC);
+
+ //计算普通奖励需要次数（对每类分别计算）
+ long reqA, reqB, reqC;
+
+ if (remA ==0) reqA =0;
+ else if (normalA >0) reqA = CeilDiv(remA, normalA);
+ else reqA = long.MaxValue; // 普通奖励无法提供 A
+
+ if (remB ==0) reqB =0;
+ else if (normalB >0) reqB = CeilDiv(remB, normalB);
+ else reqB = long.MaxValue;
+
+ if (remC ==0) reqC =0;
+ else if (normalC >0) reqC = CeilDiv(remC, normalC);
+ else reqC = long.MaxValue;
+
+ long n = Math.Max(reqA, Math.Max(reqB, reqC));
+
+ if (n == long.MaxValue)
+ {
+ // 在该 s 下无解，继续下一个 s
+ continue;
+ }
+
+ long total = s + n;
+
+ if (total < bestTotal)
+ {
+ found = true;
+ bestTotal = (int)total;
+ bestS = s;
+ bestN = (int)n;
+ }
+ }
+
+ if (!found)
+ {
+ return new RoundsResult { Possible = false, TotalRounds = -1, SaladUses =0, NormalUses =0 };
+ }
+
+ return new RoundsResult { Possible = true, TotalRounds = bestTotal, SaladUses = bestS, NormalUses = bestN };
+ }
+
+ private static long CeilDiv(long numerator, long denominator)
+ {
+ if (denominator <=0) throw new ArgumentException("分母必须为正数。", nameof(denominator));
+ return (numerator + denominator -1) / denominator;
+ }
+ }
+}

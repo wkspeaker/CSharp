@@ -1,0 +1,135 @@
+﻿using System;
+
+namespace LangrisserTools.TmpActivityCalculation.Services
+{
+ /// <summary>
+ ///计算达到指定 A/B/C 奖励所需的最小行动次数（新规则）：
+ /// - 每次行动选择一个目标类别（A/B/C）并选择奖励类型（色拉或普通）。
+ /// - 色拉奖励每次给定数量 saladAmount（对所选类别），普通奖励每次给定数量 normalAmount（对所选类别）。
+ /// - 色拉总次数<= maxSaladUses（通常40），普通次数不限。
+ /// - 求最小的总行动次数，以及每类分别使用的色拉次数与普通次数分配。
+ /// </summary>
+ public static class RoundsCalculator
+ {
+ public sealed class RoundsResult
+ {
+ public bool Possible { get; init; }
+ public int TotalRounds { get; init; }
+ public int TotalSaladUses { get; init; }
+ public int TotalNormalUses { get; init; }
+ // per-category counts in order A,B,C
+ public int[] SaladUsesPerCategory { get; init; } = new int[3];
+ public int[] NormalUsesPerCategory { get; init; } = new int[3];
+ }
+
+ /// <summary>
+ ///计算最少行动次数
+ /// </summary>
+ /// <param name="needA">目标 A 类奖励数量（非负）</param>
+ /// <param name="needB">目标 B 类奖励数量（非负）</param>
+ /// <param name="needC">目标 C 类奖励数量（非负）</param>
+ /// <param name="saladAmount">色拉奖励每次获得的数量（>=0）</param>
+ /// <param name="normalAmount">普通奖励每次获得的数量（>=0）</param>
+ /// <param name="maxSaladUses">色拉奖励最大可用次数（默认40）</param>
+ /// <returns>若 Possible==true 则包含最优解和分配；否则表示无解</returns>
+ public static RoundsResult CalculateMinimumRounds(
+ int needA, int needB, int needC,
+ int saladAmount, int normalAmount,
+ int maxSaladUses =40)
+ {
+ if (needA <0 || needB <0 || needC <0)
+ throw new ArgumentException("需要的奖励数量不得为负数。");
+ if (maxSaladUses <0) throw new ArgumentException("maxSaladUses不能为负数。");
+ if (saladAmount <0 || normalAmount <0) throw new ArgumentException("奖励数量不能为负数。");
+
+ // Edge cases: if both yields are0 and any need >0 -> impossible
+ if (saladAmount ==0 && normalAmount ==0)
+ {
+ if (needA ==0 && needB ==0 && needC ==0)
+ {
+ return new RoundsResult { Possible = true, TotalRounds =0, TotalSaladUses =0, TotalNormalUses =0 };
+ }
+ return new RoundsResult { Possible = false, TotalRounds = -1 };
+ }
+
+ bool found = false;
+ int bestTotal = int.MaxValue;
+ int[] bestS = new int[3];
+ int[] bestN = new int[3];
+
+ // Enumerate distribution of salad uses among A, B, C
+ for (int sA =0; sA <= maxSaladUses; sA++)
+ {
+ for (int sB =0; sB <= maxSaladUses - sA; sB++)
+ {
+ int remainingSalad = maxSaladUses - sA - sB;
+ // sC can range0..remainingSalad
+ for (int sC =0; sC <= remainingSalad; sC++)
+ {
+ int totalSaladUsed = sA + sB + sC;
+
+ // Compute remaining needs after salad distribution
+ long remA = Math.Max(0, needA - (long)sA * saladAmount);
+ long remB = Math.Max(0, needB - (long)sB * saladAmount);
+ long remC = Math.Max(0, needC - (long)sC * saladAmount);
+
+ long reqA, reqB, reqC;
+
+ if (remA ==0) reqA =0;
+ else if (normalAmount >0) reqA = CeilDiv(remA, normalAmount);
+ else reqA = long.MaxValue; // normal cannot cover
+
+ if (remB ==0) reqB =0;
+ else if (normalAmount >0) reqB = CeilDiv(remB, normalAmount);
+ else reqB = long.MaxValue;
+
+ if (remC ==0) reqC =0;
+ else if (normalAmount >0) reqC = CeilDiv(remC, normalAmount);
+ else reqC = long.MaxValue;
+
+ if (reqA == long.MaxValue || reqB == long.MaxValue || reqC == long.MaxValue)
+ {
+ // impossible distribution
+ continue;
+ }
+
+ long totalNormalNeeded = reqA + reqB + reqC;
+ long totalActions = totalSaladUsed + totalNormalNeeded;
+
+ if (totalActions < bestTotal)
+ {
+ found = true;
+ bestTotal = (int)totalActions;
+ bestS[0] = sA; bestS[1] = sB; bestS[2] = sC;
+ bestN[0] = (int)reqA; bestN[1] = (int)reqB; bestN[2] = (int)reqC;
+ }
+ }
+ }
+ }
+
+ if (!found)
+ {
+ return new RoundsResult { Possible = false, TotalRounds = -1 };
+ }
+
+ int totalSal = bestS[0] + bestS[1] + bestS[2];
+ int totalNor = bestN[0] + bestN[1] + bestN[2];
+
+ return new RoundsResult
+ {
+ Possible = true,
+ TotalRounds = totalSal + totalNor,
+ TotalSaladUses = totalSal,
+ TotalNormalUses = totalNor,
+ SaladUsesPerCategory = new int[] { bestS[0], bestS[1], bestS[2] },
+ NormalUsesPerCategory = new int[] { bestN[0], bestN[1], bestN[2] }
+ };
+ }
+
+ private static long CeilDiv(long numerator, long denominator)
+ {
+ if (denominator <=0) throw new ArgumentException("分母必须为正数。", nameof(denominator));
+ return (numerator + denominator -1) / denominator;
+ }
+ }
+}

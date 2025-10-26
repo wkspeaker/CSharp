@@ -1,0 +1,112 @@
+﻿using System;
+using System.Text;
+using System.Windows;
+using LangrisserTools.TmpActivityCalculation.Services;
+
+namespace LangrisserTools.TmpActivityCalculation
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+            Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object? sender, RoutedEventArgs e)
+        {
+            // 设置默认值
+            NeedABox.Text = "0";
+            NeedBBox.Text = "0";
+            NeedCBox.Text = "0";
+            SaladABox.Text = "1";
+            SaladBBox.Text = "1";
+            SaladCBox.Text = "1";
+            NormalABox.Text = "1";
+            NormalBBox.Text = "1";
+            NormalCBox.Text = "1";
+            MaxSaladBox.Text = "40";
+        }
+
+        private void CalculateButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int needA = ParseIntOrThrow(NeedABox.Text, "Need A");
+                int needB = ParseIntOrThrow(NeedBBox.Text, "Need B");
+                int needC = ParseIntOrThrow(NeedCBox.Text, "Need C");
+
+                int saladA = ParseIntOrThrow(SaladABox.Text, "Salad A");
+                int saladB = ParseIntOrThrow(SaladBBox.Text, "Salad B");
+                int saladC = ParseIntOrThrow(SaladCBox.Text, "Salad C");
+
+                int normalA = ParseIntOrThrow(NormalABox.Text, "Normal A");
+                int normalB = ParseIntOrThrow(NormalBBox.Text, "Normal B");
+                int normalC = ParseIntOrThrow(NormalCBox.Text, "Normal C");
+
+                int maxSalad = ParseIntOrThrow(MaxSaladBox.Text, "Max Salad");
+
+                var result = RoundsCalculator.CalculateMinimumRounds(
+                    needA, needB, needC,
+                    saladA, saladB, saladC,
+                    normalA, normalB, normalC,
+                    maxSalad);
+
+                var sb = new StringBuilder();
+                if (!result.Possible)
+                {
+                    sb.AppendLine("无可行解：请检查产出配置（是否全部为0导致无法满足需求）");
+                }
+                else
+                {
+                    sb.AppendLine($"最少总行动次数: {result.TotalRounds}");
+                    sb.AppendLine($"色拉使用次数: {result.SaladUses}");
+                    sb.AppendLine($"普通奖励次数: {result.NormalUses}");
+                    sb.AppendLine();
+                    sb.AppendLine("按最优色拉次数计算，需要针对每类 A/B/C 的普通奖励次数（向上取整）：");
+
+                    //计算基于最优色拉次数的每类普通次数分配（取每类ceil)
+                    int s = result.SaladUses;
+                    long remA = Math.Max(0, needA - (long)s * saladA);
+                    long remB = Math.Max(0, needB - (long)s * saladB);
+                    long remC = Math.Max(0, needC - (long)s * saladC);
+
+                    long reqA = remA == 0 ? 0 : (normalA > 0 ? (remA + normalA - 1) / normalA : long.MaxValue);
+                    long reqB = remB == 0 ? 0 : (normalB > 0 ? (remB + normalB - 1) / normalB : long.MaxValue);
+                    long reqC = remC == 0 ? 0 : (normalC > 0 ? (remC + normalC - 1) / normalC : long.MaxValue);
+
+                    sb.AppendLine($"针对 A 类，需要普通奖励次数: {reqA}");
+                    sb.AppendLine($"针对 B 类，需要普通奖励次数: {reqB}");
+                    sb.AppendLine($"针对 C 类，需要普通奖励次数: {reqC}");
+                    sb.AppendLine();
+
+                    sb.AppendLine($"校验: 色拉产出合计 A/B/C 分别为: { (long)s * saladA } / { (long)s * saladB } / { (long)s * saladC }");
+                    sb.AppendLine($"校验: 普通产出合计 A/B/C 分别为: { (reqA == long.MaxValue ? "∞" : (reqA * (long)normalA).ToString()) } / { (reqB == long.MaxValue ? "∞" : (reqB * (long)normalB).ToString()) } / { (reqC == long.MaxValue ? "∞" : (reqC * (long)normalC).ToString()) }");
+
+                    // 汇总普通分配次数与总计
+                    long totalNormalFromAlloc = (reqA == long.MaxValue ? 0 : reqA) + (reqB == long.MaxValue ? 0 : reqB) + (reqC == long.MaxValue ? 0 : reqC);
+                    sb.AppendLine();
+                    sb.AppendLine($"按类分配的普通次数合计（仅供参考）: {totalNormalFromAlloc}");
+                    sb.AppendLine($"色拉次数 + 类分配普通次数 = {s} + {totalNormalFromAlloc} = {s + totalNormalFromAlloc}");
+                }
+
+                ResultTextBox.Text = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"计算失败：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private int ParseIntOrThrow(string text, string fieldName)
+        {
+            if (!int.TryParse(text, out int v))
+                throw new ArgumentException($"字段 {fieldName} 必须是整数。");
+            if (v < 0) throw new ArgumentException($"字段 {fieldName}不能为负数。");
+            return v;
+        }
+    }
+}

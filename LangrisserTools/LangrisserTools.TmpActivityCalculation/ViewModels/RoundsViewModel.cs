@@ -1,0 +1,146 @@
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Windows;
+using System.Windows.Input;
+using LangrisserTools.TmpActivityCalculation.Services;
+using LangrisserTools.TmpActivityCalculation.Models;
+
+namespace LangrisserTools.TmpActivityCalculation.ViewModels
+{
+ public class RoundsViewModel : INotifyPropertyChanged, IDataErrorInfo
+ {
+ private int _needA;
+ private int _needB;
+ private int _needC;
+ private int _needD;
+ private int _saladAmount;
+ private int _normalAmount;
+ private int _maxSalad;
+ private string _resultText = string.Empty;
+ private ActivityReward _activityReward;
+ private readonly ActivityRewardDataService _dataService;
+
+ public RoundsViewModel()
+ {
+ CalculateCommand = new RelayCommand(_ => Calculate(), _ => CanCalculate);
+ _dataService = new ActivityRewardDataService();
+ _activityReward = _dataService.LoadData();
+ // defaults if null
+ if (_activityReward == null) _activityReward = new ActivityReward();
+
+ // seed ViewModel properties from model
+ NeedA = _activityReward.ReqGapA; NeedB = _activityReward.ReqGapB; NeedC = _activityReward.ReqGapC; NeedD = _activityReward.ReqGapD;
+ SaladAmount = _activityReward.RewardSalad !=0 ? _activityReward.RewardSalad :75;
+ NormalAmount = _activityReward.RewardNormal !=0 ? _activityReward.RewardNormal :1;
+ MaxSalad = _activityReward.RoundsLimitSalad !=0 ? _activityReward.RoundsLimitSalad :40;
+ }
+
+ public int NeedA { get => _needA; set { _needA = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+ public int NeedB { get => _needB; set { _needB = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+ public int NeedC { get => _needC; set { _needC = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+ public int NeedD { get => _needD; set { _needD = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+ public int SaladAmount { get => _saladAmount; set { _saladAmount = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+ public int NormalAmount { get => _normalAmount; set { _normalAmount = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+ public int MaxSalad { get => _maxSalad; set { _maxSalad = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanCalculate)); } }
+
+ public string ResultText { get => _resultText; set { _resultText = value; OnPropertyChanged(); } }
+
+ public ICommand CalculateCommand { get; }
+
+ public bool CanCalculate => ValidateAll();
+
+ private bool ValidateAll()
+ {
+ // simple validation: non-negative, salad/normal not both zero when needs>0
+ if (NeedA <0 || NeedB <0 || NeedC <0 || NeedD <0) return false;
+ if (MaxSalad <0) return false;
+ if (SaladAmount <0 || NormalAmount <0) return false;
+ if (NeedA ==0 && NeedB ==0 && NeedC ==0 && NeedD ==0) return true;
+ if (SaladAmount ==0 && NormalAmount ==0) return false;
+ return true;
+ }
+
+ private void Calculate()
+ {
+ try
+ {
+ // update model from VM inputs
+ _activityReward.RewardSalad = SaladAmount;
+ _activityReward.RewardNormal = NormalAmount;
+ _activityReward.RoundsLimitSalad = MaxSalad;
+ // also update totals if user edited needs directly
+ _activityReward.TotalReqA = NeedA + _activityReward.CurrentQtyA; // keep compatibility (though normally CalculateRequirementsTotal will be used)
+ _activityReward.TotalReqB = NeedB + _activityReward.CurrentQtyB;
+ _activityReward.TotalReqC = NeedC + _activityReward.CurrentQtyC;
+ _activityReward.TotalReqD = NeedD + _activityReward.CurrentQtyD;
+
+ var res = RoundsCalculator.CalculateMinimumRounds(NeedA, NeedB, NeedC, NeedD, SaladAmount, NormalAmount, MaxSalad);
+ var sb = new StringBuilder();
+ if (!res.Possible)
+ {
+ sb.AppendLine("无可行解");
+ }
+ else
+ {
+ sb.AppendLine($"最少总行动次数: {res.TotalRounds}");
+ sb.AppendLine($"色拉总次数: {res.TotalSaladUses}");
+ sb.AppendLine($"普通总次数: {res.TotalNormalUses}");
+ sb.AppendLine();
+ sb.AppendLine("分配 A | B | C | D (色拉 | 普通 |由色拉产出 |由普通产出 | 合计产出 ): ");
+ for (int i =0; i <4; i++)
+ {
+ string cat = i ==0 ? "A" : i ==1 ? "B" : i ==2 ? "C" : "D";
+ sb.AppendLine($"{cat} : {res.SaladUsesPerCategory[i]} | {res.NormalUsesPerCategory[i]} | {res.ProducedBySaladPerCategory[i]} | {res.ProducedByNormalPerCategory[i]} | {res.TotalProducedPerCategory[i]}");
+ }
+
+ // write back to model
+ _activityReward.RoundsSaladA = res.SaladUsesPerCategory[0];
+ _activityReward.RoundsSaladB = res.SaladUsesPerCategory[1];
+ _activityReward.RoundsSaladC = res.SaladUsesPerCategory[2];
+ _activityReward.RoundsSaladD = res.SaladUsesPerCategory[3];
+
+ _activityReward.RoundsNormalA = res.NormalUsesPerCategory[0];
+ _activityReward.RoundsNormalB = res.NormalUsesPerCategory[1];
+ _activityReward.RoundsNormalC = res.NormalUsesPerCategory[2];
+ _activityReward.RoundsNormalD = res.NormalUsesPerCategory[3];
+
+ // persist
+ _dataService.SaveData(_activityReward);
+ }
+ ResultText = sb.ToString();
+ }
+ catch (Exception ex)
+ {
+ MessageBox.Show($"计算失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+ }
+ }
+
+ #region INotifyPropertyChanged
+ public event PropertyChangedEventHandler? PropertyChanged;
+ protected void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+ #endregion
+
+ #region IDataErrorInfo
+ public string Error => null;
+ public string this[string columnName]
+ {
+ get
+ {
+ switch (columnName)
+ {
+ case nameof(NeedA): if (NeedA <0) return "不能为负数"; break;
+ case nameof(NeedB): if (NeedB <0) return "不能为负数"; break;
+ case nameof(NeedC): if (NeedC <0) return "不能为负数"; break;
+ case nameof(NeedD): if (NeedD <0) return "不能为负数"; break;
+ case nameof(SaladAmount): if (SaladAmount <0) return "不能为负数"; break;
+ case nameof(NormalAmount): if (NormalAmount <0) return "不能为负数"; break;
+ case nameof(MaxSalad): if (MaxSalad <0) return "不能为负数"; break;
+ }
+ return string.Empty;
+ }
+ }
+ #endregion
+ }
+}
