@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LangrisserTools.TmpActivityCalculator")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c4e1b41244c44b93de3733f13d62db1dd224c7d9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+19393d5e17216435f5f4074cce8e84241997eade")]
 [assembly: System.Reflection.AssemblyProductAttribute("LangrisserTools.TmpActivityCalculator")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LangrisserTools.TmpActivityCalculator")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

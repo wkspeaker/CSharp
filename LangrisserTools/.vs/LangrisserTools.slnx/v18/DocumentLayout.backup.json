@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D0FB0373-308A-4CD2-8473-6E85D67FA42E}|LangrisserTools.TmpActivityCalculation\\LangrisserTools.TmpActivityCalculator.csproj|h:\\redspider\\private\\develop\\c#\\csharppractics\\csharp\\langrissertools\\langrissertools.tmpactivitycalculation\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D0FB0373-308A-4CD2-8473-6E85D67FA42E}|LangrisserTools.TmpActivityCalculation\\LangrisserTools.TmpActivityCalculator.csproj|solutionrelative:langrissertools.tmpactivitycalculation\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{262A8D90-B235-4BBD-85B1-9AC419172192}|LangrisserTools.Main\\LangrisserTools.Main.csproj|h:\\redspider\\private\\develop\\c#\\csharppractics\\csharp\\langrissertools\\langrissertools.main\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{262A8D90-B235-4BBD-85B1-9AC419172192}|LangrisserTools.Main\\LangrisserTools.Main.csproj|solutionrelative:langrissertools.main\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D0FB0373-308A-4CD2-8473-6E85D67FA42E}|LangrisserTools.TmpActivityCalculation\\LangrisserTools.TmpActivityCalculator.csproj|h:\\redspider\\private\\develop\\c#\\csharppractics\\csharp\\langrissertools\\langrissertools.tmpactivitycalculation\\viewmodels\\roundsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D0FB0373-308A-4CD2-8473-6E85D67FA42E}|LangrisserTools.TmpActivityCalculation\\LangrisserTools.TmpActivityCalculator.csproj|solutionrelative:langrissertools.tmpactivitycalculation\\viewmodels\\roundsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D0FB0373-308A-4CD2-8473-6E85D67FA42E}|LangrisserTools.TmpActivityCalculation\\LangrisserTools.TmpActivityCalculator.csproj|h:\\redspider\\private\\develop\\c#\\csharppractics\\csharp\\langrissertools\\langrissertools.tmpactivitycalculation\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{D0FB0373-308A-4CD2-8473-6E85D67FA42E}|LangrisserTools.TmpActivityCalculation\\LangrisserTools.TmpActivityCalculator.csproj|solutionrelative:langrissertools.tmpactivitycalculation\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D0FB0373-308A-4CD2-8473-6E85D67FA42E}|LangrisserTools.TmpActivityCalculation\\LangrisserTools.TmpActivityCalculator.csproj|h:\\redspider\\private\\develop\\c#\\csharppractics\\csharp\\langrissertools\\langrissertools.tmpactivitycalculation\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -90,49 +90,18 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AssemblyInfo.cs",
-              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\AssemblyInfo.cs",
-              "RelativeDocumentMoniker": "LangrisserTools.TmpActivityCalculation\\AssemblyInfo.cs",
-              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\AssemblyInfo.cs",
-              "RelativeToolTip": "LangrisserTools.TmpActivityCalculation\\AssemblyInfo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T10:13:11.201Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "RoundsViewModel.cs",
-              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\ViewModels\\RoundsViewModel.cs",
-              "RelativeDocumentMoniker": "LangrisserTools.TmpActivityCalculation\\ViewModels\\RoundsViewModel.cs",
-              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\ViewModels\\RoundsViewModel.cs",
-              "RelativeToolTip": "LangrisserTools.TmpActivityCalculation\\ViewModels\\RoundsViewModel.cs",
-              "ViewState": "AgIAAGsAAAAAAAAAAADwvxkAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T04:46:58.114Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Main\\MainWindow.xaml",
               "RelativeDocumentMoniker": "LangrisserTools.Main\\MainWindow.xaml",
               "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Main\\MainWindow.xaml",
               "RelativeToolTip": "LangrisserTools.Main\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-11-16T08:35:22.078Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-16T08:35:22.078Z"
             },
             {
               "$type": "Document",
@@ -144,7 +113,31 @@
               "RelativeToolTip": "LangrisserTools.Main\\MainWindow.xaml.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAAIwBsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-25T14:00:06.584Z",
+              "WhenOpened": "2025-10-25T14:00:06.584Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "LangrisserTools.TmpActivityCalculation\\MainWindow.xaml",
+              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\MainWindow.xaml",
+              "RelativeToolTip": "LangrisserTools.TmpActivityCalculation\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-26T04:02:09.981Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RoundsViewModel.cs",
+              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\ViewModels\\RoundsViewModel.cs",
+              "RelativeDocumentMoniker": "LangrisserTools.TmpActivityCalculation\\ViewModels\\RoundsViewModel.cs",
+              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\ViewModels\\RoundsViewModel.cs",
+              "RelativeToolTip": "LangrisserTools.TmpActivityCalculation\\ViewModels\\RoundsViewModel.cs",
+              "ViewState": "AgIAAAwBAAAAAAAAAABUwDYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-26T04:46:58.114Z",
               "EditorCaption": ""
             },
             {
@@ -157,8 +150,7 @@
               "RelativeToolTip": "LangrisserTools.Core\\Services\\DataService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-25T14:06:19.836Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-25T14:06:19.836Z"
             },
             {
               "$type": "Document",
@@ -174,15 +166,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "LangrisserTools.TmpActivityCalculation\\MainWindow.xaml",
-              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\MainWindow.xaml",
-              "RelativeToolTip": "LangrisserTools.TmpActivityCalculation\\MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-10-26T04:02:09.981Z",
-              "EditorCaption": ""
+              "DocumentIndex": 3,
+              "Title": "AssemblyInfo.cs",
+              "DocumentMoniker": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "LangrisserTools.TmpActivityCalculation\\AssemblyInfo.cs",
+              "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\AssemblyInfo.cs",
+              "RelativeToolTip": "LangrisserTools.TmpActivityCalculation\\AssemblyInfo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-16T10:13:11.201Z"
             },
             {
               "$type": "Document",
@@ -192,7 +184,7 @@
               "RelativeDocumentMoniker": "LangrisserTools.TmpActivityCalculation\\MainWindow.xaml.cs",
               "ToolTip": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\MainWindow.xaml.cs",
               "RelativeToolTip": "LangrisserTools.TmpActivityCalculation\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAABUwCIAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-26T04:02:09.629Z",
               "EditorCaption": ""
@@ -219,8 +211,7 @@
               "RelativeToolTip": "TimeCalculatorForGuild\\LangrisserTools.TimeCalculatorForGuild.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-10-25T13:54:58.666Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-25T13:54:58.666Z"
             },
             {
               "$type": "Document",

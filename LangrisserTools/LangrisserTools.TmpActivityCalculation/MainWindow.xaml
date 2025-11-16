@@ -6,45 +6,132 @@
         xmlns:local="clr-namespace:LangrisserTools.TmpActivityCalculation"
         xmlns:vm="clr-namespace:LangrisserTools.TmpActivityCalculation.ViewModels"
         mc:Ignorable="d"
-        Title="Rounds Calculator" Height="560" Width="900">
+        Title="Rounds Calculator" Height="720" Width="900">
     <Window.DataContext>
         <vm:RoundsViewModel />
     </Window.DataContext>
+
+    <Window.Resources>
+        <!-- Style to select all text when TextBox receives keyboard focus and focus on mouse click -->
+        <Style x:Key="SelectAllOnFocusTextBox" TargetType="TextBox">
+            <EventSetter Event="GotKeyboardFocus" Handler="TextBox_SelectAll" />
+            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TextBox_PreviewMouseLeftButtonDown" />
+        </Style>
+
+        <!-- Read-only cell style to look like text but allow selection/copy -->
+        <Style x:Key="ReadonlyCellTextBox" TargetType="TextBox">
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="2" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+
     <Grid Margin="12">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="200" /> <!-- labels / left column -->
+            <ColumnDefinition Width="*" />   <!-- inputs / right column -->
         </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" /> <!-- Names -->
+            <RowDefinition Height="Auto" /> <!-- Totals -->
+            <RowDefinition Height="Auto" /> <!-- Current -->
+            <RowDefinition Height="Auto" /> <!-- Gap -->
+            <RowDefinition Height="Auto" /> <!-- Settings -->
+            <RowDefinition Height="Auto" /> <!-- Button -->
+            <RowDefinition Height="Auto" /> <!-- Results header -->
+            <RowDefinition Height="*" />    <!-- Results area -->
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="目标需求 (A / B / C / D):" VerticalAlignment="Center" Margin="0,0,8,0" />
-        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-            <TextBox Width="80" Margin="0,0,8,0" Text="{Binding NeedA, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-            <TextBox Width="80" Margin="0,0,8,0" Text="{Binding NeedB, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-            <TextBox Width="80" Margin="0,0,8,0" Text="{Binding NeedC, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-            <TextBox Width="80" Text="{Binding NeedD, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        <!-- Names row -->
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="物品名称 (A / B / C / D):" VerticalAlignment="Center" Margin="0,4,8,4" />
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+            <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="100" Margin="0,4,8,4" Text="{Binding NameA, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="100" Margin="0,4,8,4" Text="{Binding NameB, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="100" Margin="0,4,8,4" Text="{Binding NameC, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="100" Margin="0,4,0,4" Text="{Binding NameD, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="色拉奖励每次产出 (单值):" VerticalAlignment="Center" Margin="0,8,8,0" />
-        <TextBox Grid.Row="1" Grid.Column="1" Width="120" Margin="0,8,0,0" Text="{Binding SaladAmount, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        <!-- Totals row -->
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="目标总需求 (A / B / C / D):" VerticalAlignment="Center" Margin="0,4,8,4" />
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+            <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="100" Margin="0,4,8,4" Text="{Binding TotalReqA, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="100" Margin="0,4,8,4" Text="{Binding TotalReqB, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="100" Margin="0,4,8,4" Text="{Binding TotalReqC, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="100" Margin="0,4,0,4" Text="{Binding TotalReqD, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        </StackPanel>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="普通奖励每次产出 (单值):" VerticalAlignment="Center" Margin="0,8,8,0" />
-        <TextBox Grid.Row="2" Grid.Column="1" Width="120" Margin="0,8,0,0" Text="{Binding NormalAmount, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        <!-- Current row -->
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="当前已有数量 (A / B / C / D):" VerticalAlignment="Center" Margin="0,4,8,4" />
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+            <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="100" Margin="0,4,8,4" Text="{Binding CurrentQtyA, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="100" Margin="0,4,8,4" Text="{Binding CurrentQtyB, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="100" Margin="0,4,8,4" Text="{Binding CurrentQtyC, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" x:Name="CurrentQtyD" Width="100" Margin="0,4,0,4" Text="{Binding CurrentQtyD, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        </StackPanel>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="色拉最大使用次数:" VerticalAlignment="Center" Margin="0,8,8,0" />
-        <TextBox Grid.Row="3" Grid.Column="1" Width="80" Margin="0,8,0,0" Text="{Binding MaxSalad, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        <!-- Gap row (read-only, not tabbable) -->
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="缺口 (Gap) (A / B / C / D):" VerticalAlignment="Center" Margin="0,4,8,4" />
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+            <TextBox Style="{StaticResource ReadonlyCellTextBox}" IsTabStop="False" Width="100" Margin="0,4,8,4" Text="{Binding NeedA, Mode=OneWay}" />
+            <TextBox Style="{StaticResource ReadonlyCellTextBox}" IsTabStop="False" Width="100" Margin="0,4,8,4" Text="{Binding NeedB, Mode=OneWay}" />
+            <TextBox Style="{StaticResource ReadonlyCellTextBox}" IsTabStop="False" Width="100" Margin="0,4,8,4" Text="{Binding NeedC, Mode=OneWay}" />
+            <TextBox Style="{StaticResource ReadonlyCellTextBox}" IsTabStop="False" Width="100" Margin="0,4,0,4" Text="{Binding NeedD, Mode=OneWay}" />
+        </StackPanel>
 
-        <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="计算最少行动次数" Height="36" Margin="0,12,0,12" Command="{Binding CalculateCommand}" />
+        <!-- Settings row: salad, normal, max -->
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="奖励设置:" VerticalAlignment="Center" Margin="0,4,8,4" />
+        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Margin="0,4,12,4" VerticalAlignment="Center">
+                <TextBlock Text="色拉 (单值):" VerticalAlignment="Center" Margin="0,0,6,0" />
+                <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="80" Text="{Binding SaladAmount, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            </StackPanel>
 
-        <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Text="{Binding ResultText}" />
+            <StackPanel Orientation="Horizontal" Margin="0,4,12,4" VerticalAlignment="Center">
+                <TextBlock Text="普通 (单值):" VerticalAlignment="Center" Margin="0,0,6,0" />
+                <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="80" Text="{Binding NormalAmount, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,4,12,4" VerticalAlignment="Center">
+                <TextBlock Text="色拉最大使用次数:" VerticalAlignment="Center" Margin="0,0,6,0" />
+                <TextBox Style="{StaticResource SelectAllOnFocusTextBox}" Width="80" Text="{Binding MaxSalad, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Button row -->
+        <TextBlock Grid.Row="5" Grid.Column="0" />
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,8,0,8">
+            <Button Content="计算最少行动次数" Width="200" Height="36" Command="{Binding CalculateCommand}" />
+        </StackPanel>
+
+        <!-- Results header -->
+        <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Text="结果 (文本 + 表格显示):" FontWeight="Bold" Margin="0,12,0,6" />
+
+        <!-- Results area -->
+        <Grid Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Text result -->
+            <TextBox Grid.Column="0" Margin="0,0,8,0" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Text="{Binding ResultText, Mode=OneWay}" />
+
+            <!-- DataGrid for tabular result: supports multi-cell selection and Ctrl+C copy -->
+            <DataGrid Grid.Column="1" ItemsSource="{Binding ResultGridItems}" AutoGenerateColumns="False"
+                      SelectionUnit="CellOrRowHeader" SelectionMode="Extended" ClipboardCopyMode="IncludeHeader"
+                      CanUserAddRows="False" IsReadOnly="True" HeadersVisibility="Column" Margin="8,0,0,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="项" Binding="{Binding Label}" Width="*" />
+                    <DataGridTextColumn Header="A" Binding="{Binding A}" Width="80" />
+                    <DataGridTextColumn Header="B" Binding="{Binding B}" Width="80" />
+                    <DataGridTextColumn Header="C" Binding="{Binding C}" Width="80" />
+                    <DataGridTextColumn Header="D" Binding="{Binding D}" Width="80" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
     </Grid>
 </Window>
