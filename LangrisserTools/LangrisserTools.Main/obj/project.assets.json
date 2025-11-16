@@ -135,6 +135,22 @@
         "frameworkReferences": [
           "Microsoft.WindowsDesktop.App.WPF"
         ]
+      },
+      "LangrisserTools.TmpActivityCalculator/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "LangrisserTools.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/LangrisserTools.TmpActivityCalculator.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LangrisserTools.TmpActivityCalculator.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WPF"
+        ]
       }
     }
   },
@@ -308,12 +324,18 @@
       "type": "project",
       "path": "../TimeCalculatorForGuild/LangrisserTools.TimeCalculatorForGuild.csproj",
       "msbuildProject": "../TimeCalculatorForGuild/LangrisserTools.TimeCalculatorForGuild.csproj"
+    },
+    "LangrisserTools.TmpActivityCalculator/1.0.0": {
+      "type": "project",
+      "path": "../LangrisserTools.TmpActivityCalculation/LangrisserTools.TmpActivityCalculator.csproj",
+      "msbuildProject": "../LangrisserTools.TmpActivityCalculation/LangrisserTools.TmpActivityCalculator.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0-windows7.0": [
       "LangrisserTools.Core >= 1.0.0",
       "LangrisserTools.TimeCalculatorForGuild >= 1.0.0",
+      "LangrisserTools.TmpActivityCalculator >= 1.0.0",
       "Prism.Wpf >= 9.0.537"
     ]
   },
@@ -346,6 +368,9 @@
           "projectReferences": {
             "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Core\\LangrisserTools.Core.csproj": {
               "projectPath": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.Core\\LangrisserTools.Core.csproj"
+            },
+            "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\LangrisserTools.TmpActivityCalculator.csproj": {
+              "projectPath": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\LangrisserTools.TmpActivityCalculation\\LangrisserTools.TmpActivityCalculator.csproj"
             },
             "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\TimeCalculatorForGuild\\LangrisserTools.TimeCalculatorForGuild.csproj": {
               "projectPath": "H:\\RedSpider\\Private\\Develop\\C#\\CSharpPractics\\CSharp\\LangrisserTools\\TimeCalculatorForGuild\\LangrisserTools.TimeCalculatorForGuild.csproj"

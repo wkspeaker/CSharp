@@ -34,3 +34,8 @@ H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\Langrisser
 H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Main\bin\Debug\net10.0-windows\LangrisserTools.TimeCalculatorForGuild.exe
 H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Main\bin\Debug\net10.0-windows\LangrisserTools.TimeCalculatorForGuild.dll
 H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Main\bin\Debug\net10.0-windows\LangrisserTools.TimeCalculatorForGuild.pdb
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Main\bin\Debug\net10.0-windows\LangrisserTools.TmpActivityCalculator.deps.json
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Main\bin\Debug\net10.0-windows\LangrisserTools.TmpActivityCalculator.runtimeconfig.json
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Main\bin\Debug\net10.0-windows\LangrisserTools.TmpActivityCalculator.exe
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Main\bin\Debug\net10.0-windows\LangrisserTools.TmpActivityCalculator.dll
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.Main\bin\Debug\net10.0-windows\LangrisserTools.TmpActivityCalculator.pdb

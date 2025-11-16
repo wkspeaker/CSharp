@@ -30,15 +30,28 @@ namespace LangrisserTools.Main
                 {
                     try
                     {
-                        var matches = Directory.GetFiles(solutionRoot, "TimeCalculatorForGuild.exe", SearchOption.AllDirectories);
+                        // 尝试搜索完整的可执行文件名
+                        var matches = Directory.GetFiles(solutionRoot, "LangrisserTools.TimeCalculatorForGuild.exe", SearchOption.AllDirectories);
                         if (matches.Length > 0)
                         {
                             executablePath = matches[0];
                         }
+                        else
+                        {
+                            // 如果没找到完整名称，尝试搜索部分名称
+                            var partialMatches = Directory.GetFiles(solutionRoot, "*TimeCalculator*.exe", SearchOption.AllDirectories);
+                            if (partialMatches.Length > 0)
+                            {
+                                // 优先选择包含 LangrisserTools.TimeCalculatorForGuild 的文件
+                                var preferredMatch = Array.Find(partialMatches, f => f.Contains("LangrisserTools.TimeCalculatorForGuild"));
+                                executablePath = preferredMatch ?? partialMatches[0];
+                            }
+                        }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        // 忽略搜索期间的任何权限等异常，后面会尝试其它方式
+                        // 记录搜索异常但不中断，后面会尝试其它方式
+                        System.Diagnostics.Debug.WriteLine($"搜索可执行文件时发生异常: {ex.Message}");
                     }
                 }
 
@@ -47,10 +60,19 @@ namespace LangrisserTools.Main
                 {
                     try
                     {
-                        var matches = Directory.GetFiles(Directory.GetCurrentDirectory(), "TimeCalculatorForGuild.exe", SearchOption.AllDirectories);
+                        var matches = Directory.GetFiles(Directory.GetCurrentDirectory(), "LangrisserTools.TimeCalculatorForGuild.exe", SearchOption.AllDirectories);
                         if (matches.Length > 0)
                         {
                             executablePath = matches[0];
+                        }
+                        else
+                        {
+                            var partialMatches = Directory.GetFiles(Directory.GetCurrentDirectory(), "*TimeCalculator*.exe", SearchOption.AllDirectories);
+                            if (partialMatches.Length > 0)
+                            {
+                                var preferredMatch = Array.Find(partialMatches, f => f.Contains("LangrisserTools.TimeCalculatorForGuild"));
+                                executablePath = preferredMatch ?? partialMatches[0];
+                            }
                         }
                     }
                     catch
@@ -62,7 +84,7 @@ namespace LangrisserTools.Main
                 // 仍未找到时，构造常见的默认路径作为最后尝试（例如 Debug 输出路径）
                 if (string.IsNullOrEmpty(executablePath) && !string.IsNullOrEmpty(solutionRoot))
                 {
-                    var defaultPath = Path.Combine(solutionRoot, "TimeCalculatorForGuild", "bin", "Debug", "net10.0-windows", "TimeCalculatorForGuild.exe");
+                    var defaultPath = Path.Combine(solutionRoot, "TimeCalculatorForGuild", "bin", "Debug", "net10.0-windows", "LangrisserTools.TimeCalculatorForGuild.exe");
                     if (File.Exists(defaultPath))
                     {
                         executablePath = defaultPath;
@@ -80,7 +102,12 @@ namespace LangrisserTools.Main
                 }
                 else
                 {
-                    MessageBox.Show($"找不到三本团时间计算工具的可执行文件：\n{executablePath ?? "(未找到)"}\n\n请确保项目已正确编译或在解决方案目录中存在 TimeCalculatorForGuild.exe。", 
+                    // 提供更详细的错误信息，包括尝试的路径
+                    var debugInfo = $"解决方案根目录: {solutionRoot ?? "(未找到)"}\n";
+                    debugInfo += $"当前工作目录: {Directory.GetCurrentDirectory()}\n";
+                    debugInfo += $"默认路径: {Path.Combine(solutionRoot ?? "", "TimeCalculatorForGuild", "bin", "Debug", "net10.0-windows", "LangrisserTools.TimeCalculatorForGuild.exe")}";
+                    
+                    MessageBox.Show($"找不到三本团时间计算工具的可执行文件。\n\n{debugInfo}\n\n请确保项目 TimeCalculatorForGuild 已正确编译。", 
                                   "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }

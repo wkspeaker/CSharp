@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LangrisserTools.Core\LangrisserTools.Core.csproj" />
     <ProjectReference Include="..\TimeCalculatorForGuild\LangrisserTools.TimeCalculatorForGuild.csproj" />
+    <ProjectReference Include="..\LangrisserTools.TmpActivityCalculation\LangrisserTools.TmpActivityCalculator.csproj" />
   </ItemGroup>
 
 </Project>

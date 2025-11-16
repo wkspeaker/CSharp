@@ -10,6 +10,7 @@
         "dependencies": {
           "LangrisserTools.Core": "1.0.0",
           "LangrisserTools.TimeCalculatorForGuild": "1.0.0",
+          "LangrisserTools.TmpActivityCalculator": "1.0.0",
           "Prism.Wpf": "9.0.537"
         },
         "runtime": {
@@ -94,6 +95,17 @@
             "fileVersion": "1.0.0.0"
           }
         }
+      },
+      "LangrisserTools.TmpActivityCalculator/1.0.0": {
+        "dependencies": {
+          "LangrisserTools.Core": "1.0.0"
+        },
+        "runtime": {
+          "LangrisserTools.TmpActivityCalculator.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -151,6 +163,11 @@
       "sha512": ""
     },
     "LangrisserTools.TimeCalculatorForGuild/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LangrisserTools.TmpActivityCalculator/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

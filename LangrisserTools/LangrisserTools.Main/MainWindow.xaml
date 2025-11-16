@@ -36,8 +36,7 @@
                         Background="LightBlue"
                         Click="TimeCalculatorButton_Click"
                         ToolTip="计算公会团时间，生成消息模板"/>
-                
-                <!-- 占位按钮 - 未来工具 -->
+
                 <Button Name="ToolBButton"
                         Content="活动轮数计算" 
                         FontSize="16"
@@ -48,6 +47,7 @@
                         Click="ToolBButton_Click"
                         ToolTip="计算活动轮数及奖励"/>
                 
+                <!-- 占位按钮 - 未来工具 -->
                 <Button Content="工具C (开发中)" 
                         FontSize="16"
                         Padding="20,15"
