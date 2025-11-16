@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LangrisserTools.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cb088f953c22f152f35c2728da4523aa42e50b60")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+31ab387f5a8b065bbeb78e5fb8f75bb8a9a33fb5")]
 [assembly: System.Reflection.AssemblyProductAttribute("LangrisserTools.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LangrisserTools.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

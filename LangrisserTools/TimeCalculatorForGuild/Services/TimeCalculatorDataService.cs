@@ -101,3 +101,5 @@ namespace LangrisserTools.TimeCalculatorForGuild.Services
     }
 }
 
+
+

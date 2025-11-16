@@ -38,14 +38,15 @@
                         ToolTip="计算公会团时间，生成消息模板"/>
                 
                 <!-- 占位按钮 - 未来工具 -->
-                <Button Content="工具B (开发中)" 
+                <Button Name="ToolBButton"
+                        Content="活动轮数计算" 
                         FontSize="16"
                         Padding="20,15"
                         Margin="0,10"
                         HorizontalAlignment="Stretch"
-                        Background="LightGray"
-                        IsEnabled="False"
-                        ToolTip="此工具正在开发中"/>
+                        Background="LightGreen"
+                        Click="ToolBButton_Click"
+                        ToolTip="计算活动轮数及奖励"/>
                 
                 <Button Content="工具C (开发中)" 
                         FontSize="16"

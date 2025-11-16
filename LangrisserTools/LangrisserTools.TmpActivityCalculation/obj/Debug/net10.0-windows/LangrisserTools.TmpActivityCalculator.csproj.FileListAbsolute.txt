@@ -20,3 +20,7 @@ H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\Langrisser
 H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.TmpActivityCalculation\obj\Debug\net10.0-windows\LangrisserTools.TmpActivityCalculator.genruntimeconfig.cache
 H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.TmpActivityCalculation\obj\Debug\net10.0-windows\ref\LangrisserTools.TmpActivityCalculator.dll
 H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.TmpActivityCalculation\obj\Debug\net10.0-windows\GeneratedInternalTypeHelper.g.cs
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.TmpActivityCalculation\bin\Debug\net10.0-windows\LangrisserTools.Core.dll
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.TmpActivityCalculation\bin\Debug\net10.0-windows\LangrisserTools.Core.pdb
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.TmpActivityCalculation\obj\Debug\net10.0-windows\LangrisserTools.TmpActivityCalculator.csproj.AssemblyReference.cache
+H:\RedSpider\Private\Develop\C#\CSharpPractics\CSharp\LangrisserTools\LangrisserTools.TmpActivityCalculation\obj\Debug\net10.0-windows\Langriss.CE6ED518.Up2Date
